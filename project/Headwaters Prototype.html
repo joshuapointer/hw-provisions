@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Headwaters Provisions — Interactive Prototype</title>
+<link rel="stylesheet" href="shared.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shrikhand&family=Bricolage+Grotesque:wght@400;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=IBM+Plex+Mono:wght@400;500;600&family=Caveat:wght@400;700&family=Bowlby+One+SC&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  html, body { margin: 0; padding: 0; background: #1a1a1a; }
+  body { font-family: 'Space Grotesk', sans-serif; }
+  /* Global animations used across the prototype */
+  @keyframes h-spin { from { transform: rotate(0deg) } to { transform: rotate(360deg) } }
+  @keyframes h-mq { from { transform: translateX(0) } to { transform: translateX(-50%) } }
+  @keyframes h-fade { from { opacity: 0 } to { opacity: 1 } }
+  @keyframes h-slide-down { from { transform: translateY(-100%) } to { transform: none } }
+  @keyframes h-card-in { from { opacity: 0; transform: translateY(8px) } to { opacity: 1; transform: none } }
+  @keyframes h-pulse { 0%, 100% { transform: scale(1); opacity: 1 } 50% { transform: scale(1.5); opacity: 0.5 } }
+  @keyframes h-bob { 0%, 100% { transform: translateY(0) } 50% { transform: translateY(-4px) } }
+  @keyframes h-page { from { opacity: 0; transform: translateY(8px) } to { opacity: 1; transform: none } }
+
+  /* Page transition wrapper */
+  .h-page-enter { animation: h-page .35s ease-out; }
+  .h-transitioning { opacity: 0; transition: opacity .22s; }
+  .h-transitioning-active { opacity: 1; }
+
+  /* Hide native cursor over interactive elements when custom cursor enabled */
+  [data-cursor="custom"] [data-inter] { cursor: none !important; }
+</style>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel" src="design-canvas.jsx"></script>
+<script type="text/babel" src="ios-frame.jsx"></script>
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+<script type="text/babel" src="ht-base.jsx"></script>
+<script type="text/babel" src="ht-glyphs.jsx"></script>
+<script type="text/babel" src="ht-proprietary.jsx"></script>
+<script type="text/babel" src="proto-router.jsx"></script>
+<script type="text/babel" src="proto-nav.jsx"></script>
+<script type="text/babel" src="proto-shared.jsx"></script>
+<script type="text/babel" src="proto-pages.jsx"></script>
+
+<script type="text/babel">
+  const { useTweaks, TweaksPanel, TweakSection, TweakSlider, TweakToggle, TweakRadio, TweakSelect, TweakColor } = window;
+
+  /* The actual stage that renders one page */
+  function PrototypeStage({ initialRoute = 'home', mobile = false, storageKey }) {
+    const stageRef = React.useRef(null);
+    return (
+      <HRouter initial={initialRoute} storageKey={storageKey}>
+        <HToastProvider>
+          <PrototypeRoutes mobile={mobile} stageRef={stageRef} />
+        </HToastProvider>
+      </HRouter>
+    );
+  }
+
+  function PrototypeRoutes({ mobile, stageRef }) {
+    const r = useRouter();
+    const Page = r.route === 'home'     ? ProtoHome
+              : r.route === 'showcase' ? ProtoShowcase
+              : r.route === 'visit'    ? ProtoVisit
+              : ProtoHome;
+
+    return (
+      <div ref={stageRef} style={{ position: 'relative', width: '100%', overflow: 'hidden' }}>
+        <div
+          key={r.route}
+          className="h-page-enter"
+          style={{
+            opacity: r.transitioning ? 0 : 1,
+            transition: 'opacity .22s ease',
+          }}
+        >
+          <Page mobile={mobile} />
+        </div>
+      </div>
+    );
+  }
+
+  /* iPhone-framed mobile stage */
+  function MobileStage({ initialRoute = 'home', storageKey }) {
+    return (
+      <IOSDevice>
+        <div style={{ width: '100%', height: '100%', overflow: 'auto', background: HC.cream }}>
+          <PrototypeStage initialRoute={initialRoute} mobile={true} storageKey={storageKey} />
+        </div>
+      </IOSDevice>
+    );
+  }
+
+  /* Tweak defaults block */
+  const TWEAK_DEFAULTS = window.TWEAK_DEFAULTS;
+
+  function App() {
+    const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
+
+    // Apply palette/font tweaks every render
+    React.useEffect(() => { applyTweaks(t); }, [t.palette, t.displayFont, t.bodyFont]);
+    applyTweaks(t); // also call on first render synchronously
+
+    return (
+      <>
+        <DesignCanvas
+          title="Headwaters Provisions — Interactive Prototype"
+          subtitle="Click around. Real router. Filter the showcase, RSVP to events, send the contact form."
+          initialZoom={0.5}
+        >
+          <DCSection id="desktop" title="Desktop · 1440" subtitle="Click any link to navigate. Each artboard has its own router state.">
+            <DCArtboard id="d-home"     label="Home"     width={1440} height={6200} startAt="home">
+              <PrototypeStage initialRoute="home" mobile={false} storageKey="hw-route-d-home" />
+            </DCArtboard>
+            <DCArtboard id="d-showcase" label="Showcase" width={1440} height={2700} startAt="showcase">
+              <PrototypeStage initialRoute="showcase" mobile={false} storageKey="hw-route-d-showcase" />
+            </DCArtboard>
+            <DCArtboard id="d-visit"    label="Visit"    width={1440} height={2200} startAt="visit">
+              <PrototypeStage initialRoute="visit" mobile={false} storageKey="hw-route-d-visit" />
+            </DCArtboard>
+          </DCSection>
+          <DCSection id="mobile" title="Mobile · iPhone" subtitle="The same prototype, framed in an iPhone.">
+            <DCArtboard id="m-home"     label="Home"     width={460} height={920}>
+              <MobileStage initialRoute="home" storageKey="hw-route-m-home" />
+            </DCArtboard>
+            <DCArtboard id="m-showcase" label="Showcase" width={460} height={920}>
+              <MobileStage initialRoute="showcase" storageKey="hw-route-m-showcase" />
+            </DCArtboard>
+            <DCArtboard id="m-visit"    label="Visit"    width={460} height={920}>
+              <MobileStage initialRoute="visit" storageKey="hw-route-m-visit" />
+            </DCArtboard>
+          </DCSection>
+        </DesignCanvas>
+
+        <TweaksPanel title="Tweaks">
+          <TweakSection label="Palette" />
+          <TweakRadio
+            label="Color scheme"
+            value={t.palette}
+            options={['heady', 'sunset', 'forest', 'midnight']}
+            onChange={(v) => setTweak('palette', v)}
+          />
+          <TweakSection label="Typography" />
+          <TweakSelect
+            label="Display font"
+            value={t.displayFont}
+            options={['Shrikhand', 'Bowlby One SC', 'Bricolage Grotesque', 'Fraunces']}
+            onChange={(v) => setTweak('displayFont', v)}
+          />
+          <TweakSelect
+            label="Body font"
+            value={t.bodyFont}
+            options={['Space Grotesk', 'Bricolage Grotesque', 'DM Mono', 'Fraunces']}
+            onChange={(v) => setTweak('bodyFont', v)}
+          />
+          <TweakSection label="Feel" />
+          <TweakRadio
+            label="Density"
+            value={t.density}
+            options={['compact', 'regular', 'comfy']}
+            onChange={(v) => setTweak('density', v)}
+          />
+          <TweakToggle
+            label="Heady cursor + animations"
+            value={t.novelInteractions}
+            onChange={(v) => setTweak('novelInteractions', v)}
+          />
+        </TweaksPanel>
+      </>
+    );
+  }
+
+  ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+
+  /* Global confetti on buttons + nav clicks */
+  window.addEventListener('click', (e) => {
+    const t = e.target.closest('[data-confetti], button[data-stamp], a[data-ticket], .h-confetti-on-click');
+    if (t && typeof window.spawnGlyphConfetti === 'function') {
+      window.spawnGlyphConfetti(e.clientX, e.clientY);
+    }
+  }, true);
+</script>
+</body>
+</html>

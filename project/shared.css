@@ -1,0 +1,23 @@
+/* Shared utilities */
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700;9..144,800;9..144,900&family=Inter:wght@300;400;500;600;700&family=DM+Mono:wght@300;400;500&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Space+Grotesk:wght@300;400;500;600;700&family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Archivo:wght@300;400;500;600;700;800;900&family=Archivo+Black&family=IBM+Plex+Mono:wght@300;400;500&family=Instrument+Serif:ital@0;1&family=Syne:wght@400;500;600;700;800&family=Caveat:wght@400;500;600;700&family=VT323&family=Major+Mono+Display&family=Rubik+Mono+One&family=Bowlby+One+SC&family=Cherry+Bomb+One&family=Shrikhand&family=Climate+Crisis&family=Honk&family=Special+Elite&family=Reenie+Beanie&family=Bungee&family=Bungee+Shade&display=swap');
+
+/* Placeholder image style for the diamond eye logo */
+.hw-eye-svg { display: block; }
+
+/* Common image placeholder pattern */
+.placeholder-stripe {
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgba(0,0,0,0.04) 0,
+    rgba(0,0,0,0.04) 8px,
+    transparent 8px,
+    transparent 16px
+  );
+}
+
+/* Canvas helpers — keep cards self-contained */
+.dc-page {
+  width: 1440px;
+  position: relative;
+  overflow: hidden;
+}
