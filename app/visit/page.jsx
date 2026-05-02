@@ -9,7 +9,7 @@ import { Footer } from '../../components/footer';
 import { Events } from '../../components/sections/events';
 import { useToast } from '../../components/toast';
 
-function Input({ label, value, onChange, multiline, type = 'text' }) {
+function Input({ label, value, onChange, multiline, type = 'text', name, autoComplete, maxLength, required, inputMode }) {
   const [focus, setFocus] = useState(false);
   const Cmp = multiline ? 'textarea' : 'input';
   return (
@@ -18,7 +18,15 @@ function Input({ label, value, onChange, multiline, type = 'text' }) {
         ✦ {label}
       </div>
       <Cmp
-        type={type} value={value} onChange={(e) => onChange(e.target.value)}
+        type={multiline ? undefined : type}
+        name={name}
+        autoComplete={autoComplete}
+        inputMode={inputMode}
+        maxLength={maxLength}
+        required={required}
+        spellCheck={multiline ? true : false}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
         onFocus={() => setFocus(true)} onBlur={() => setFocus(false)}
         rows={multiline ? 3 : undefined}
         style={{
@@ -34,6 +42,11 @@ function Input({ label, value, onChange, multiline, type = 'text' }) {
   );
 }
 
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const NAME_MAX = 80;
+const EMAIL_MAX = 254;
+const MSG_MAX = 2000;
+
 export default function Visit() {
   const mobile = useMobile();
   const toast = useToast();
@@ -48,12 +61,19 @@ export default function Visit() {
 
   const submit = (e) => {
     e.preventDefault();
-    if (!form.name || !form.email || !form.msg) {
+    const name = form.name.trim().slice(0, NAME_MAX);
+    const email = form.email.trim().slice(0, EMAIL_MAX);
+    const msg = form.msg.trim().slice(0, MSG_MAX);
+    if (!name || !email || !msg) {
       toast('✦ fill out everything please', HC.tangerine);
       return;
     }
+    if (!EMAIL_RE.test(email)) {
+      toast('✦ that email looks off — try again', HC.tangerine);
+      return;
+    }
     setSubmitted(true);
-    toast(`✦ got it, ${form.name.split(' ')[0]} — we'll holler back`, HC.lime);
+    toast(`✦ got it, ${name.split(' ')[0]} — we'll holler back`, HC.lime);
   };
 
   return (
@@ -110,7 +130,7 @@ export default function Visit() {
                 <div style={{ fontSize: mobile ? 12 : 13, marginTop: 10, lineHeight: 1.5 }}>
                   Inside The Source Craft Cannabis. Walk through the front doors — we're immediately on your right.
                 </div>
-                <a href="https://maps.google.com/?q=4505+W+Poplar+St+Rogers+AR" target="_blank" rel="noopener" style={{
+                <a href="https://maps.google.com/?q=4505+W+Poplar+St+Rogers+AR" target="_blank" rel="noopener noreferrer" style={{
                   marginTop: 12, display: 'inline-flex', alignItems: 'center', gap: 6,
                   ...HS.mono, fontSize: 10, color: HC.blue, textDecoration: 'none',
                 }}>OPEN IN GOOGLE MAPS ↗</a>
@@ -179,10 +199,10 @@ export default function Visit() {
               </h3>
 
               {!submitted ? (
-                <form onSubmit={submit} style={{ display: 'grid', gap: 10 }}>
-                  <Input label="your name" value={form.name} onChange={(v) => setForm({ ...form, name: v })} />
-                  <Input label="email" type="email" value={form.email} onChange={(v) => setForm({ ...form, email: v })} />
-                  <Input label="what's up?" multiline value={form.msg} onChange={(v) => setForm({ ...form, msg: v })} />
+                <form onSubmit={submit} method="post" noValidate style={{ display: 'grid', gap: 10 }}>
+                  <Input label="your name" name="name" autoComplete="name" maxLength={NAME_MAX} required value={form.name} onChange={(v) => setForm({ ...form, name: v })} />
+                  <Input label="email" name="email" type="email" autoComplete="email" inputMode="email" maxLength={EMAIL_MAX} required value={form.email} onChange={(v) => setForm({ ...form, email: v })} />
+                  <Input label="what's up?" name="message" autoComplete="off" maxLength={MSG_MAX} required multiline value={form.msg} onChange={(v) => setForm({ ...form, msg: v })} />
                   <button type="submit" style={{
                     marginTop: 4, padding: '14px 22px', background: HC.ink, color: HC.lime,
                     border: `2px solid ${HC.ink}`, borderRadius: 999, ...HS.alt, fontSize: 16,

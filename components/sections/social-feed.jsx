@@ -30,7 +30,7 @@ export function SocialFeed({ mobile = false }) {
         </div>
         {!mobile && (
           <div style={{ display: 'flex', gap: 10 }}>
-            <a href="https://www.instagram.com/headwaters_provisions" target="_blank" rel="noopener" style={{
+            <a href="https://www.instagram.com/headwaters_provisions" target="_blank" rel="noopener noreferrer" style={{
               padding: '12px 20px', background: HC.ink, color: HC.cream,
               border: `2px solid ${HC.ink}`, borderRadius: 999, ...HS.mono, fontSize: 11,
               textDecoration: 'none', boxShadow: `4px 4px 0 ${HC.magenta}`,

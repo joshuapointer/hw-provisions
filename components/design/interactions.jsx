@@ -54,30 +54,70 @@ export function HoverSticker({ children, baseRotate = -2, hoverRotate = 1, lift 
   );
 }
 
-function getGlyphPath(n) {
-  const paths = {
-    '01': '<path d="M 4 32 Q 32 8, 60 32 Q 32 56, 4 32 Z" /><circle cx="32" cy="32" r="8" fill="currentColor" />',
-    '02': '<path d="M 10 30 Q 10 10, 32 10 Q 54 10, 54 30 L 50 34 Q 32 30, 14 34 Z" /><path d="M 22 34 L 24 56 Q 32 58, 40 56 L 42 34" />',
-    '03': '<circle cx="32" cy="32" r="10" /><line x1="32" y1="6" x2="32" y2="18" /><line x1="32" y1="46" x2="32" y2="58" /><line x1="6" y1="32" x2="18" y2="32" /><line x1="46" y1="32" x2="58" y2="32" /><line x1="14" y1="14" x2="22" y2="22" /><line x1="42" y1="42" x2="50" y2="50" /><line x1="50" y1="14" x2="42" y2="22" /><line x1="22" y1="42" x2="14" y2="50" />',
-    '06': '<path d="M 36 4 L 16 32 L 28 32 L 20 60 L 48 28 L 36 28 L 42 4 Z" />',
-    '08': '<path d="M 32 4 Q 22 18, 26 28 Q 18 24, 16 36 Q 14 50, 32 60 Q 50 50, 48 36 Q 46 24, 38 28 Q 42 18, 32 4 Z" />',
-    '09': '<path d="M 32 4 L 36 26 L 60 32 L 36 38 L 32 60 L 28 38 L 4 32 L 28 26 Z" />',
-  };
-  return paths[n] || paths['09'];
-}
+// Glyph shapes as SVG element specs. Built via DOM APIs (not innerHTML) so
+// callers can't smuggle markup through the color argument.
+const GLYPH_SHAPES = {
+  '01': [
+    ['path', { d: 'M 4 32 Q 32 8, 60 32 Q 32 56, 4 32 Z' }],
+    ['circle', { cx: '32', cy: '32', r: '8', fill: 'currentColor' }],
+  ],
+  '02': [
+    ['path', { d: 'M 10 30 Q 10 10, 32 10 Q 54 10, 54 30 L 50 34 Q 32 30, 14 34 Z' }],
+    ['path', { d: 'M 22 34 L 24 56 Q 32 58, 40 56 L 42 34' }],
+  ],
+  '03': [
+    ['circle', { cx: '32', cy: '32', r: '10' }],
+    ['line', { x1: '32', y1: '6', x2: '32', y2: '18' }],
+    ['line', { x1: '32', y1: '46', x2: '32', y2: '58' }],
+    ['line', { x1: '6', y1: '32', x2: '18', y2: '32' }],
+    ['line', { x1: '46', y1: '32', x2: '58', y2: '32' }],
+    ['line', { x1: '14', y1: '14', x2: '22', y2: '22' }],
+    ['line', { x1: '42', y1: '42', x2: '50', y2: '50' }],
+    ['line', { x1: '50', y1: '14', x2: '42', y2: '22' }],
+    ['line', { x1: '22', y1: '42', x2: '14', y2: '50' }],
+  ],
+  '06': [['path', { d: 'M 36 4 L 16 32 L 28 32 L 20 60 L 48 28 L 36 28 L 42 4 Z' }]],
+  '08': [['path', { d: 'M 32 4 Q 22 18, 26 28 Q 18 24, 16 36 Q 14 50, 32 60 Q 50 50, 48 36 Q 46 24, 38 28 Q 42 18, 32 4 Z' }]],
+  '09': [['path', { d: 'M 32 4 L 36 26 L 60 32 L 36 38 L 32 60 L 28 38 L 4 32 L 28 26 Z' }]],
+};
+
+const SAFE_COLOR = /^#[0-9a-fA-F]{3,8}$|^rgba?\([\d.,\s%]+\)$|^hsla?\([\d.,\s%]+\)$/;
+const SVG_NS = 'http://www.w3.org/2000/svg';
 
 export function spawnGlyphConfetti(x, y, color) {
   if (typeof document === 'undefined') return;
-  const colors = [HC.amber, HC.rose, HC.haze, HC.fern, HC.ember];
+  const palette = [HC.amber, HC.rose, HC.haze, HC.fern, HC.ember];
+  const safeColor = (typeof color === 'string' && SAFE_COLOR.test(color)) ? color : null;
   for (let i = 0; i < 3; i++) {
     const el = document.createElement('div');
     const g = GLYPHS[Math.floor(Math.random() * GLYPHS.length)];
-    const c = color || colors[Math.floor(Math.random() * colors.length)];
+    const choice = palette[Math.floor(Math.random() * palette.length)];
+    const c = safeColor || (SAFE_COLOR.test(choice) ? choice : palette[0]);
     const dx = (Math.random() - 0.5) * 80;
     const dy = -60 - Math.random() * 80;
     const rot = (Math.random() - 0.5) * 80;
-    el.style.cssText = `position: fixed; left: ${x - 12}px; top: ${y - 12}px; pointer-events: none; z-index: 9999; transition: transform 1.1s cubic-bezier(.2,.8,.2,1), opacity 1.1s ease-out; will-change: transform, opacity;`;
-    el.innerHTML = `<svg width="24" height="24" viewBox="0 0 64 64" stroke="${c}" fill="${g.n === '06' || g.n === '08' || g.n === '09' ? c : 'none'}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">${getGlyphPath(g.n)}</svg>`;
+    Object.assign(el.style, {
+      position: 'fixed', left: `${x - 12}px`, top: `${y - 12}px`,
+      pointerEvents: 'none', zIndex: '9999',
+      transition: 'transform 1.1s cubic-bezier(.2,.8,.2,1), opacity 1.1s ease-out',
+      willChange: 'transform, opacity',
+    });
+    const svg = document.createElementNS(SVG_NS, 'svg');
+    svg.setAttribute('width', '24');
+    svg.setAttribute('height', '24');
+    svg.setAttribute('viewBox', '0 0 64 64');
+    svg.setAttribute('stroke', c);
+    svg.setAttribute('fill', (g.n === '06' || g.n === '08' || g.n === '09') ? c : 'none');
+    svg.setAttribute('stroke-width', '3');
+    svg.setAttribute('stroke-linecap', 'round');
+    svg.setAttribute('stroke-linejoin', 'round');
+    const shapes = GLYPH_SHAPES[g.n] || GLYPH_SHAPES['09'];
+    for (const [tag, attrs] of shapes) {
+      const node = document.createElementNS(SVG_NS, tag);
+      for (const [k, v] of Object.entries(attrs)) node.setAttribute(k, v);
+      svg.appendChild(node);
+    }
+    el.appendChild(svg);
     document.body.appendChild(el);
     requestAnimationFrame(() => {
       el.style.transform = `translate(${dx}px, ${dy}px) rotate(${rot}deg) scale(1.2)`;

@@ -1,13 +1,14 @@
 'use client';
-import { createContext, useContext, useState, useCallback } from 'react';
+import { createContext, useContext, useState, useCallback, useRef } from 'react';
 import { HC, HS } from './design/tokens';
 
 const ToastCtx = createContext(null);
 
 export function ToastProvider({ children }) {
   const [toasts, setToasts] = useState([]);
+  const seq = useRef(0);
   const push = useCallback((msg, color) => {
-    const id = Math.random();
+    const id = ++seq.current;
     setToasts(t => [...t, { id, msg, color }]);
     setTimeout(() => setToasts(t => t.filter(x => x.id !== id)), 3200);
   }, []);

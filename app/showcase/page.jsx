@@ -195,7 +195,7 @@ export default function Showcase() {
               border: `2px solid ${HC.ink}`, borderRadius: 14,
               ...HS.alt, fontSize: mobile ? 14 : 18, textDecoration: 'none', display: 'block',
             }}>✦ call · (479) 251-8581</a>
-            <a href="https://instagram.com/headwaters_provisions" target="_blank" rel="noopener" style={{
+            <a href="https://instagram.com/headwaters_provisions" target="_blank" rel="noopener noreferrer" style={{
               background: HC.magenta, color: HC.ink, padding: '14px 18px',
               border: `2px solid ${HC.ink}`, borderRadius: 14,
               ...HS.alt, fontSize: mobile ? 14 : 18, textDecoration: 'none', display: 'block',
