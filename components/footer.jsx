@@ -1,6 +1,6 @@
 'use client';
 import { HC, HS } from './design/tokens';
-import { Rings, Burst, Smoke, CurvedText, Halftone } from './design/base';
+import { Rings, Burst, Smoke, CurvedText, Halftone, Sunny } from './design/base';
 
 export function Footer({ mobile = false }) {
   return (
@@ -17,22 +17,18 @@ export function Footer({ mobile = false }) {
           <Smoke size={180} color={HC.cream} opacity={0.5} />
         </div>
       )}
-      {/* Banner texture */}
       <img src="/assets/mopbp8c2-Headwaters_Banner.png" alt="" aria-hidden
         style={{
           position: 'absolute', left: 0, bottom: 0, width: '100%',
           opacity: 0.18, mixBlendMode: 'screen', pointerEvents: 'none',
           objectFit: 'cover', maxHeight: 220,
         }} />
-      {/* Sunny love wave */}
-      <img src="/assets/mopbq0al-Sunny_love.png" alt=""
+      <Sunny pose="love" rotate={-4} animate="h-bob-rot 4.6s ease-in-out infinite"
         style={{
           position: 'absolute', right: mobile ? -10 : 80, bottom: mobile ? 8 : 40,
           height: mobile ? 140 : 220, width: 'auto',
-          transform: 'rotate(-4deg)',
           filter: 'drop-shadow(3px 4px 0 rgba(0,0,0,0.25)) drop-shadow(0 12px 18px rgba(0,0,0,0.30))',
           pointerEvents: 'none', zIndex: 1,
-          animation: 'h-bob-rot 4.6s ease-in-out infinite',
         }} />
       <svg viewBox="0 0 1440 24" preserveAspectRatio="none" style={{
         position: 'absolute', top: -1, left: 0, width: '100%', height: 24, transform: 'scaleY(-1)',

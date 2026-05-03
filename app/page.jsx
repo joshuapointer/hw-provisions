@@ -126,7 +126,6 @@ export default function Home() {
                   </div>
                 </Sticker>
               </div>
-              {/* Sunny peace */}
               <Sunny pose="peace" size={200} rotate={-4}
                 style={{
                   position: 'absolute', right: -90, top: 220, zIndex: 3,
@@ -168,7 +167,6 @@ export default function Home() {
                   <SunRise size={380} sun={HC.amber} mountain={HC.blueDeep} sky={HC.cream} />
                 </div>
               </div>
-              {/* Sunny thumbsup endorsing the gear */}
               <Sunny pose="thumbsup" size={140} rotate={6}
                 style={{
                   position: 'absolute', right: -50, top: 80, zIndex: 3,
@@ -257,7 +255,6 @@ export default function Home() {
               <div style={{ position: 'absolute', top: -22, right: -28, transform: 'rotate(12deg)', filter: `drop-shadow(3px 3px 0 ${HC.ink})` }}>
                 <Mushroom size={90} cap={HC.amber} stem={HC.cream} dots={HC.cream} />
               </div>
-              {/* Sunny woo, scaled */}
               <Sunny pose="woo" size={130} rotate={-8}
                 style={{
                   position: 'absolute', left: -120, bottom: -40, zIndex: 3,
