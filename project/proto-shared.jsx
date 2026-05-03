@@ -219,6 +219,84 @@ function ProtoSocialFeed({ mobile = false }) {
   );
 }
 
+/* ============================================================
+   SUNNY CURSOR — a small Sunny that follows the pointer with lag,
+   swaps poses on hover/click, hides on touch devices.
+   ============================================================ */
+function SunnyCursor({ scope }) {
+  const wrapRef = React.useRef(null);
+  const sunnyRef = React.useRef(null);
+  const [pose, setPose] = React.useState('peace');
+  const [visible, setVisible] = React.useState(false);
+
+  React.useEffect(() => {
+    const el = scope?.current || document.body;
+    if (!el) return;
+    let raf, x = 0, y = 0, tx = 0, ty = 0;
+    const tick = () => {
+      x += (tx - x) * 0.18;
+      y += (ty - y) * 0.18;
+      if (sunnyRef.current) sunnyRef.current.style.transform =
+        `translate3d(${x - 36}px, ${y - 30}px, 0) rotate(${(tx - x) * 0.4}deg)`;
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+
+    const onMove = (e) => {
+      const r = el.getBoundingClientRect();
+      tx = e.clientX - r.left;
+      ty = e.clientY - r.top;
+      setVisible(true);
+    };
+    const onLeave = () => setVisible(false);
+    const onOver = (e) => {
+      if (e.target.closest('[data-inter], a, button')) {
+        setPose('thumbs');
+      } else {
+        setPose('peace');
+      }
+    };
+    const onDown = () => setPose('jump');
+    const onUp   = () => setPose('peace');
+
+    el.addEventListener('mousemove', onMove);
+    el.addEventListener('mouseleave', onLeave);
+    el.addEventListener('mouseover', onOver);
+    el.addEventListener('mousedown', onDown);
+    el.addEventListener('mouseup', onUp);
+
+    return () => {
+      cancelAnimationFrame(raf);
+      el.removeEventListener('mousemove', onMove);
+      el.removeEventListener('mouseleave', onLeave);
+      el.removeEventListener('mouseover', onOver);
+      el.removeEventListener('mousedown', onDown);
+      el.removeEventListener('mouseup', onUp);
+    };
+  }, [scope]);
+
+  const src = pose === 'thumbs' ? 'mopbq0be-Sunny_Thumbs_Up.png'
+            : pose === 'jump'   ? 'mopbq0ae-Sunny_jump.png'
+            : 'mopbq0av-Sunny_peace.png';
+
+  return (
+    <div ref={wrapRef} style={{
+      position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 100,
+      opacity: visible ? 1 : 0, transition: 'opacity .25s',
+    }}>
+      <img ref={sunnyRef} src={src} alt=""
+        style={{
+          position: 'absolute', top: 0, left: 0,
+          width: 72, height: 72, objectFit: 'contain',
+          willChange: 'transform',
+          filter: 'drop-shadow(2px 3px 0 rgba(0,0,0,0.25))',
+          transition: 'filter .15s',
+        }} />
+    </div>
+  );
+}
+
 window.ProtoMarquee = ProtoMarquee;
 window.ProtoEvents = ProtoEvents;
 window.ProtoSocialFeed = ProtoSocialFeed;
+window.SunnyCursor = SunnyCursor;

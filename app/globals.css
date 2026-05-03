@@ -1,19 +1,103 @@
+@font-face {
+  font-family: 'Holtzman Rounded';
+  src: url('/fonts/Holtzman-Rounded.otf') format('opentype');
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Sonoran';
+  src: url('/fonts/SONORAN.otf') format('opentype');
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Gunnar';
+  src: url('/fonts/Gunnar-Regular.ttf') format('truetype');
+  font-display: swap;
+}
+
 *, *::before, *::after { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; }
-body { font-family: 'Space Grotesk', sans-serif; background: #F2E6C9; }
+body { font-family: 'Gunnar', 'Space Grotesk', sans-serif; background: #F2E6C9; }
 
-@keyframes h-spin      { from { transform: rotate(0deg) }  to { transform: rotate(360deg) } }
-@keyframes h-mq        { from { transform: translateX(0) } to { transform: translateX(-50%) } }
-@keyframes h-fade      { from { opacity: 0 }               to { opacity: 1 } }
+@keyframes h-spin       { from { transform: rotate(0deg) }  to { transform: rotate(360deg) } }
+@keyframes h-mq         { from { transform: translateX(0) } to { transform: translateX(-50%) } }
+@keyframes h-fade       { from { opacity: 0 }               to { opacity: 1 } }
 @keyframes h-slide-down { from { transform: translateY(-100%) } to { transform: none } }
-@keyframes h-card-in   { from { opacity: 0; transform: translateY(8px) } to { opacity: 1; transform: none } }
-@keyframes h-pulse     { 0%, 100% { transform: scale(1); opacity: 1 } 50% { transform: scale(1.5); opacity: 0.5 } }
-@keyframes h-bob       { 0%, 100% { transform: translateY(0) } 50% { transform: translateY(-4px) } }
-@keyframes h-page      { from { opacity: 0; transform: translateY(8px) } to { opacity: 1; transform: none } }
-@keyframes hw-spin     { from { transform: rotate(0deg) }  to { transform: rotate(360deg) } }
-@keyframes h-toast-in  { from { opacity: 0; transform: translateY(8px) } to { opacity: 1; transform: none } }
+@keyframes h-card-in    { from { opacity: 0; transform: translateY(8px) } to { opacity: 1; transform: none } }
+@keyframes h-pulse      { 0%, 100% { transform: scale(1); opacity: 1 } 50% { transform: scale(1.5); opacity: 0.5 } }
+@keyframes h-bob        { 0%, 100% { transform: translateY(0) } 50% { transform: translateY(-4px) } }
+@keyframes h-page       { from { opacity: 0; transform: translateY(8px) } to { opacity: 1; transform: none } }
+@keyframes hw-spin      { from { transform: rotate(0deg) }  to { transform: rotate(360deg) } }
+@keyframes h-toast-in   { from { opacity: 0; transform: translateY(8px) } to { opacity: 1; transform: none } }
+
+@keyframes h-page-in-forward {
+  from { opacity: 0; transform: translateX(36px) translateY(6px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes h-page-in-back {
+  from { opacity: 0; transform: translateX(-36px) translateY(6px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes h-rise-in {
+  from { opacity: 0; transform: translateY(18px); filter: blur(4px); }
+  to   { opacity: 1; transform: none; filter: blur(0); }
+}
+@keyframes h-word-in {
+  from { opacity: 0; transform: translateY(40%) rotate(-2deg); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes h-bob-rot {
+  0%, 100% { transform: translateY(0) rotate(-2deg) }
+  50%      { transform: translateY(-6px) rotate(2deg) }
+}
+@keyframes h-wiggle {
+  0%, 100% { transform: rotate(0deg) }
+  25%      { transform: rotate(-4deg) }
+  75%      { transform: rotate(4deg) }
+}
+@keyframes h-walk {
+  0%   { left: -15%; }
+  100% { left: 110%; }
+}
+@keyframes h-walk-bob {
+  0%, 100%  { transform: translateY(0) }
+  25%, 75%  { transform: translateY(-8px) }
+}
+@keyframes h-rain {
+  0%   { transform: translateY(-120%) rotate(-12deg); opacity: 0; }
+  20%  { opacity: 1; }
+  100% { transform: translateY(120vh) rotate(8deg); opacity: 0; }
+}
+@keyframes h-pop-in {
+  0%   { transform: scale(0) rotate(-30deg); opacity: 0; }
+  60%  { transform: scale(1.15) rotate(8deg); opacity: 1; }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+@keyframes h-jump {
+  0%, 100% { transform: translateY(0) rotate(-2deg); }
+  40%      { transform: translateY(-22px) rotate(4deg); }
+  60%      { transform: translateY(-22px) rotate(-2deg); }
+}
+@keyframes h-menu-in {
+  from { opacity: 0; transform: translateX(-12px) }
+  to   { opacity: 1; transform: none }
+}
 
 .h-page-enter { animation: h-page .35s ease-out; }
+.h-page-enter-forward { animation: h-page-in-forward .42s cubic-bezier(.16,.84,.32,1) both; }
+.h-page-enter-back    { animation: h-page-in-back    .42s cubic-bezier(.16,.84,.32,1) both; }
+
+.h-stagger > * { opacity: 0; animation: h-rise-in .55s cubic-bezier(.16,.84,.32,1) both; }
+.h-stagger > *:nth-child(1) { animation-delay: .04s; }
+.h-stagger > *:nth-child(2) { animation-delay: .12s; }
+.h-stagger > *:nth-child(3) { animation-delay: .20s; }
+.h-stagger > *:nth-child(4) { animation-delay: .28s; }
+.h-stagger > *:nth-child(5) { animation-delay: .36s; }
+.h-stagger > *:nth-child(6) { animation-delay: .44s; }
+
+.h-word { display: inline-block; opacity: 0; animation: h-word-in .55s cubic-bezier(.34,1.56,.64,1) both; }
+.h-word-1 { animation-delay: .15s; }
+.h-word-2 { animation-delay: .30s; }
+.h-word-3 { animation-delay: .45s; }
 
 /* Fix iOS momentum scroll flicker */
 * { -webkit-tap-highlight-color: transparent; }
@@ -25,7 +109,12 @@ input, textarea { font-family: inherit; }
 /* Responsive breakpoints used by useMobile hook */
 @media (max-width: 768px) {
   .desktop-only { display: none !important; }
+  .sunny-cursor { display: none !important; }
 }
 @media (min-width: 769px) {
   .mobile-only { display: none !important; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
 }

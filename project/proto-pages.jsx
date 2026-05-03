@@ -73,7 +73,10 @@ function ProtoHome({ mobile = false }) {
               textShadow: mobile ? `4px 4px 0 ${HC.ink}` : `8px 8px 0 ${HC.ink}`,
               letterSpacing: '-0.03em',
             }}>
-              <span style={{ display: 'block' }}>where's your</span>
+              <span style={{ display: 'block' }}>
+                <span className="h-word h-word-1">where's</span>{' '}
+                <span className="h-word h-word-2">your</span>
+              </span>
               <span style={{
                 display: 'block', fontStyle: 'italic',
                 color: HC.amber,
@@ -81,17 +84,18 @@ function ProtoHome({ mobile = false }) {
                 WebkitTextStroke: `${mobile ? 2 : 3}px ${HC.ink}`,
                 paintOrder: 'stroke fill',
                 marginLeft: mobile ? 12 : 40,
-              }}>head at?</span>
+              }}>
+                <span className="h-word h-word-3">head at?</span>
+              </span>
             </h1>
             <Squiggle width={mobile ? 220 : 520} color={HC.amber} />
             <p style={{
-              marginTop: 16, fontSize: mobile ? 15 : 22, maxWidth: 540, lineHeight: 1.4,
+              marginTop: 16, fontSize: mobile ? 17 : 26, maxWidth: 540, lineHeight: 1.35,
               ...HS.serif, fontStyle: 'italic', fontWeight: 400, color: 'rgba(245,236,217,0.95)',
             }}>
-              small shop, floor-curated. <br/>
-              cannabis accessories, apparel, and the kind of gifts that fly under your mom's radar. <br/>
-              <span style={{ ...HS.hand, fontStyle: 'normal', fontSize: mobile ? 22 : 30, color: HC.amber, display: 'inline-block', marginTop: 6 }}>
-                tucked into the source · rogers ar.
+              floor-curated gear. one-of-one drops. <br/>
+              <span style={{ ...HS.hand, fontStyle: 'normal', fontSize: mobile ? 28 : 38, color: HC.amber, display: 'inline-block', marginTop: 8, lineHeight: 1 }}>
+                inside the source · rogers, ar.
               </span>
             </p>
             <div style={{ display: 'flex', gap: mobile ? 10 : 18, marginTop: mobile ? 24 : 36, alignItems: 'center', flexWrap: 'wrap' }}>
@@ -105,26 +109,48 @@ function ProtoHome({ mobile = false }) {
           </div>
           {!mobile && (
             <div style={{ position: 'relative', paddingTop: 30 }}>
-              <div style={{ transform: 'rotate(3deg)' }}>
-                <Sticker color={HC.cream} rotate={0} padding={10} shadow={true}>
+              <div style={{ transform: 'rotate(3deg)', position: 'relative' }}>
+                <div style={{
+                  background: HC.cream, padding: 14, paddingBottom: 18,
+                  border: `2px solid ${HC.ink}`,
+                  boxShadow: `8px 10px 0 ${HC.ink}, 0 14px 22px rgba(0,0,0,0.18)`,
+                }}>
                   <div style={{
                     width: 320, aspectRatio: '4/5', overflow: 'hidden',
                     background: `url(assets/photo-3.avif) center/cover`,
                     border: `1px solid ${HC.ink}`,
                   }} />
-                  <div style={{ ...HS.hand, fontSize: 26, color: HC.ink, textAlign: 'center', marginTop: 8, lineHeight: 1 }}>
+                  <div style={{ ...HS.hand, fontSize: 30, color: HC.ink, textAlign: 'center', marginTop: 8, lineHeight: 1 }}>
                     one of one ✦
                   </div>
-                </Sticker>
+                </div>
+                {/* tape strips */}
+                <div style={{ position: 'absolute', top: -10, left: -22, width: 92, height: 22,
+                  background: 'rgba(255,224,102,0.78)', transform: 'rotate(-12deg)',
+                  border: '1px solid rgba(0,0,0,0.18)' }} />
+                <div style={{ position: 'absolute', top: -10, right: -18, width: 86, height: 22,
+                  background: 'rgba(56,124,204,0.62)', transform: 'rotate(9deg)',
+                  border: '1px solid rgba(0,0,0,0.18)' }} />
               </div>
-              <div style={{ position: 'absolute', top: -16, left: -28, zIndex: 2 }}>
-                <Sticker color={HC.rose} rotate={-8} padding={10} shadow={false} peel={false}>
-                  <div style={{ ...HS.alt, fontSize: 14, color: HC.cream }}>HEADY<br/>DROPS</div>
-                  <div style={{ ...HS.mono, fontSize: 9, color: HC.cream, marginTop: 2 }}>FRI · 5PM</div>
-                </Sticker>
+              {/* SUNNY peace-signing next to the polaroid */}
+              <img src="mopbq0av-Sunny_peace.png" alt=""
+                style={{
+                  position: 'absolute', right: -90, top: 220,
+                  height: 240, width: 'auto', zIndex: 3,
+                  transform: 'rotate(8deg)',
+                  filter: 'drop-shadow(4px 6px 0 rgba(0,0,0,0.28)) drop-shadow(0 14px 22px rgba(0,0,0,0.24))',
+                  pointerEvents: 'none',
+                  animation: 'h-bob 4.2s ease-in-out infinite',
+                }} />
+              <div style={{ position: 'absolute', top: -16, left: -28, zIndex: 2,
+                display: 'inline-block', padding: '8px 14px', background: HC.rose, color: HC.cream,
+                border: `2px solid ${HC.ink}`, transform: 'rotate(-8deg)',
+                boxShadow: `3px 4px 0 ${HC.ink}` }}>
+                <div style={{ ...HS.alt, fontSize: 16, lineHeight: 1.05 }}>HEADY<br/>DROPS</div>
+                <div style={{ ...HS.mono, fontSize: 9, marginTop: 4 }}>FRI · 5PM</div>
               </div>
               <div style={{ position: 'absolute', bottom: -12, right: -24, transform: 'rotate(14deg)' }}>
-                <Lightning size={56} color={HC.amber} />
+                <Lightning size={64} color={HC.amber} />
               </div>
             </div>
           )}
@@ -134,9 +160,18 @@ function ProtoHome({ mobile = false }) {
       <ProtoMarquee bg={HC.ink} fg={HC.amber} />
 
       {/* INTRO */}
-      <section style={{ padding: mobile ? '40px 16px' : '80px 40px', background: HC.cream, position: 'relative' }}>
+      <section style={{ padding: mobile ? '40px 16px' : '80px 40px', background: HC.cream, position: 'relative', overflow: 'hidden' }}>
         <Halftone color={HC.ink} opacity={0.06} dot={2} gap={11} />
+        <ProductPattern color={HC.blue} opacity={0.08} blend="multiply" />
+        {/* Headwaters banner texture, faintly */}
+        <img src="mopbp8c2-Headwaters_Banner.png" alt=""
+          style={{
+            position: 'absolute', left: '-5%', bottom: -40, width: '50%',
+            opacity: 0.18, mixBlendMode: 'multiply', pointerEvents: 'none',
+            filter: 'saturate(0.6)',
+          }} />
         <div style={{
+          position: 'relative',
           display: mobile ? 'block' : 'grid', gridTemplateColumns: '1fr 1.4fr', gap: 64, alignItems: 'center',
         }}>
           {!mobile && (
@@ -146,6 +181,16 @@ function ProtoHome({ mobile = false }) {
                   <SunRise size={380} sun={HC.amber} mountain={HC.blueDeep} sky={HC.cream} />
                 </div>
               </div>
+              {/* SUNNY love floating into the sunrise illustration */}
+              <img src="mopbq0al-Sunny_love.png" alt=""
+                style={{
+                  position: 'absolute', right: -50, top: 80,
+                  height: 180, width: 'auto', zIndex: 3,
+                  transform: 'rotate(-6deg)',
+                  filter: 'drop-shadow(4px 5px 0 rgba(0,0,0,0.25)) drop-shadow(0 10px 14px rgba(0,0,0,0.18))',
+                  pointerEvents: 'none',
+                  animation: 'h-bob 4.6s ease-in-out infinite',
+                }} />
               <div style={{
                 position: 'absolute', top: 24, left: -28,
                 ...HS.hand, fontSize: 60, color: HC.rose,
@@ -167,8 +212,8 @@ function ProtoHome({ mobile = false }) {
             </h2>
             <div style={{ marginTop: 28, maxWidth: 560 }}>
               <DropCap glyphN="03" color={HC.amber}>
-                <span style={{ ...HS.serif, fontSize: mobile ? 17 : 21, lineHeight: 1.5, fontStyle: 'italic' }}>
-                  headwaters provisions sits just inside the front doors of the source — rogers, arkansas. cannabis accessories, apparel, and the kind of gifts you can't find online. (because we're not online. on purpose.)
+                <span style={{ ...HS.serif, fontSize: mobile ? 19 : 24, lineHeight: 1.45, fontStyle: 'italic' }}>
+                  inside the front doors of the source. accessories, apparel, gifts you won't find online — because we aren't.
                 </span>
               </DropCap>
             </div>
@@ -196,9 +241,9 @@ function ProtoHome({ mobile = false }) {
             <h2 style={{ ...HS.display, fontSize: mobile ? 64 : 132, lineHeight: 0.84, margin: '14px 0 0', color: HC.cream, letterSpacing: '-0.025em' }}>
               one of <span style={{ color: HC.amber, fontStyle: 'italic', WebkitTextStroke: `2px ${HC.ink}`, paintOrder: 'stroke fill' }}>one</span>.
             </h2>
-            <p style={{ marginTop: 18, ...HS.serif, fontStyle: 'italic', fontSize: mobile ? 16 : 21, lineHeight: 1.45, maxWidth: 480, color: 'rgba(242,230,201,0.92)' }}>
-              local glassblowers drop pieces every friday at five. <br/>
-              we keep one. when it's gone — that's the whole story.
+            <p style={{ marginTop: 18, ...HS.serif, fontStyle: 'italic', fontSize: mobile ? 18 : 24, lineHeight: 1.4, maxWidth: 480, color: 'rgba(242,230,201,0.92)' }}>
+              local glass. fridays at five. <br/>
+              we keep one — when it's gone, it's gone.
             </p>
             <div style={{ marginTop: 28, display: 'flex', alignItems: 'center', gap: 18, flexWrap: 'wrap' }}>
               <div data-inter onClick={(e) => { spawnGlyphConfetti(e.clientX, e.clientY); r.navigate('visit'); }}>
@@ -211,22 +256,32 @@ function ProtoHome({ mobile = false }) {
           </div>
           {!mobile && (
             <div style={{ position: 'relative', justifySelf: 'end' }}>
-              <div style={{ transform: 'rotate(-2deg)' }}>
-                <Sticker color={HC.cream} rotate={0} padding={12} shadow={true}>
-                  <div style={{
-                    width: 380, aspectRatio: '1/1', overflow: 'hidden',
-                    background: `url(assets/photo-1.avif) center/cover`,
-                    border: `1px solid ${HC.ink}`,
-                  }} />
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginTop: 8 }}>
-                    <div style={{ ...HS.hand, fontSize: 22, color: HC.ink }}>spoon · sage glass</div>
-                    <div style={{ ...HS.mono, fontSize: 9, color: HC.smoke }}>NO. 47/47</div>
-                  </div>
-                </Sticker>
+              <div style={{ transform: 'rotate(-2deg)', position: 'relative',
+                background: HC.cream, padding: 14,
+                border: `2px solid ${HC.ink}`,
+                boxShadow: `8px 10px 0 ${HC.amber}, 0 14px 22px rgba(0,0,0,0.18)` }}>
+                <div style={{
+                  width: 380, aspectRatio: '1/1', overflow: 'hidden',
+                  background: `url(assets/photo-1.avif) center/cover`,
+                  border: `1px solid ${HC.ink}`,
+                }} />
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginTop: 10 }}>
+                  <div style={{ ...HS.hand, fontSize: 26, color: HC.ink }}>spoon · sage glass</div>
+                  <div style={{ ...HS.mono, fontSize: 9, color: HC.smoke }}>NO. 47/47</div>
+                </div>
               </div>
               <div style={{ position: 'absolute', top: -22, right: -28, transform: 'rotate(12deg)', filter: `drop-shadow(3px 3px 0 ${HC.ink})` }}>
-                <Mushroom size={90} cap={HC.amber} stem={HC.cream} dots={HC.cream} />
+                <Mushroom size={100} cap={HC.amber} stem={HC.cream} dots={HC.cream} />
               </div>
+              {/* SUNNY thumbs-up endorsing the piece */}
+              <img src="mopbq0be-Sunny_Thumbs_Up.png" alt=""
+                style={{
+                  position: 'absolute', left: -120, bottom: -40,
+                  height: 220, width: 'auto', zIndex: 3,
+                  transform: 'rotate(-6deg) scaleX(-1)',
+                  filter: 'drop-shadow(4px 6px 0 rgba(0,0,0,0.28)) drop-shadow(0 14px 22px rgba(0,0,0,0.24))',
+                  pointerEvents: 'none',
+                }} />
             </div>
           )}
           {mobile && (
@@ -260,6 +315,16 @@ function ProtoShowcase({ mobile = false }) {
   const r = useRouter();
   const [filter, setFilter] = React.useState('all');
   const [hovered, setHovered] = React.useState(null);
+  const [walkKey, setWalkKey] = React.useState(0);
+  const [showWalker, setShowWalker] = React.useState(false);
+
+  /* When the filter changes, briefly run a walking Sunny across the page */
+  React.useEffect(() => {
+    setWalkKey(k => k + 1);
+    setShowWalker(true);
+    const t = setTimeout(() => setShowWalker(false), 2200);
+    return () => clearTimeout(t);
+  }, [filter]);
 
   const categories = [
     { id: 'glass',  name: 'Heady Glass',         desc: 'One-of-one pieces from local NWA blowers and beyond.', img: 'assets/photo-1.avif', c: HC.magenta,   count: 38 },
@@ -298,26 +363,60 @@ function ProtoShowcase({ mobile = false }) {
 
       {/* HERO */}
       <section style={{ padding: mobile ? '32px 16px' : '60px 40px 32px', background: HC.amber, borderBottom: `3px solid ${HC.ink}`, position: 'relative', overflow: 'hidden' }}>
-        <Halftone color={HC.ink} opacity={0.1} dot={2.5} gap={10} />
+        <Halftone color={HC.ink} opacity={0.12} dot={2.5} gap={10} />
+        <ProductPattern color={HC.ink} opacity={0.1} blend="multiply" />
         <div style={{ position: 'absolute', right: -60, top: -60, pointerEvents: 'none' }}>
-          <Rings size={mobile ? 200 : 360} color={HC.rose} opacity={0.5} />
+          <Rings size={mobile ? 200 : 360} color={HC.rose} opacity={0.5} count={6} />
         </div>
         {!mobile && (
-          <div style={{ position: 'absolute', right: 80, bottom: 40, transform: 'rotate(-6deg)', filter: `drop-shadow(4px 4px 0 ${HC.ink})` }}>
-            <Eye size={120} iris={HC.haze} lash={HC.ink} />
-          </div>
+          <>
+            <div style={{ position: 'absolute', right: 320, bottom: 60, transform: 'rotate(-6deg)', filter: `drop-shadow(4px 4px 0 ${HC.ink})` }}>
+              <Eye size={120} iris={HC.haze} lash={HC.ink} />
+            </div>
+            {/* SUNNY holding a sign — points at the headline */}
+            <img src="mopbq0a5-Sunny_Holding_Sign.png" alt=""
+              style={{
+                position: 'absolute', right: 40, bottom: -20,
+                height: 320, width: 'auto', zIndex: 2,
+                transform: 'rotate(4deg)',
+                filter: 'drop-shadow(4px 6px 0 rgba(0,0,0,0.28)) drop-shadow(0 14px 22px rgba(0,0,0,0.24))',
+                pointerEvents: 'none',
+                animation: 'h-bob 3.6s ease-in-out infinite',
+              }} />
+            {/* Mushroom + lightning ornaments */}
+            <div style={{ position: 'absolute', left: 80, bottom: 40, transform: 'rotate(8deg)', filter: `drop-shadow(3px 3px 0 ${HC.ink})` }}>
+              <Mushroom size={70} cap={HC.rose} stem={HC.cream} dots={HC.cream} />
+            </div>
+          </>
         )}
         <div style={{ position: 'relative' }}>
           <FolioRule n={1} of={3} label="the showcase · floor only" />
           <h1 style={{ ...HS.display, fontSize: mobile ? 76 : 192, margin: '14px 0 0', lineHeight: 0.84, letterSpacing: '-0.025em' }}>
-            stock the <span style={{ color: HC.cream, fontStyle: 'italic', WebkitTextStroke: `${mobile ? 2 : 3}px ${HC.ink}`, paintOrder: 'stroke fill' }}>vibe.</span>
+            <span className="h-word h-word-1">stock</span>{' '}
+            <span className="h-word h-word-2">the</span>{' '}
+            <span className="h-word h-word-3" style={{ color: HC.cream, fontStyle: 'italic', WebkitTextStroke: `${mobile ? 2 : 3}px ${HC.ink}`, paintOrder: 'stroke fill' }}>vibe.</span>
           </h1>
-          <p style={{ ...HS.serif, fontStyle: 'italic', fontSize: mobile ? 16 : 22, lineHeight: 1.4, marginTop: 18, maxWidth: 680 }}>
-            no online cart. no shipping. <br/>
-            just a window into what's on the floor right now — brands, categories, the kind of gear you can hold before you decide.
+          <p style={{ ...HS.serif, fontStyle: 'italic', fontSize: mobile ? 18 : 26, lineHeight: 1.35, marginTop: 18, maxWidth: 680 }}>
+            no cart. no shipping. <br/>
+            just what's on the floor — held in your hand before you decide.
           </p>
         </div>
       </section>
+
+      {/* WALKING SUNNY — appears for ~2s after a filter change */}
+      {showWalker && !mobile && (
+        <div key={walkKey} style={{
+          position: 'absolute', top: 240, left: 0, right: 0, height: 0, zIndex: 25, pointerEvents: 'none',
+        }}>
+          <img src="mopbq0bk-Sunny_Walk.png" alt=""
+            style={{
+              position: 'absolute', top: -100, left: '-15%',
+              height: 180, width: 'auto',
+              animation: 'h-walk 2.2s cubic-bezier(.4,.1,.6,.9) forwards',
+              filter: 'drop-shadow(3px 4px 0 rgba(0,0,0,0.25))',
+            }} />
+        </div>
+      )}
 
       {/* FILTER PILLS */}
       <section style={{ padding: mobile ? '20px 16px' : '32px 40px', background: HC.cream, borderBottom: `2px solid ${HC.ink}`, position: 'sticky', top: 0, zIndex: 20 }}>
@@ -327,14 +426,19 @@ function ProtoShowcase({ mobile = false }) {
             const isActive = filter === opt.id;
             return (
               <button data-inter key={opt.id} onClick={() => setFilter(opt.id)} style={{
-                padding: mobile ? '8px 14px' : '10px 18px',
+                padding: mobile ? '10px 18px' : '12px 22px',
                 background: isActive ? HC.ink : (opt.c || HC.cream),
                 color: isActive ? HC.lime : HC.ink,
                 border: `2px solid ${HC.ink}`, borderRadius: 999,
-                ...HS.mono, fontSize: mobile ? 9 : 11, cursor: 'pointer',
-                boxShadow: isActive ? `3px 3px 0 ${HC.lime}` : 'none',
-                transition: 'all .15s',
-              }}>
+                ...HS.display, fontSize: mobile ? 18 : 22, lineHeight: 1, letterSpacing: '-0.005em',
+                cursor: 'pointer',
+                boxShadow: isActive ? `4px 4px 0 ${HC.lime}` : `2px 2px 0 ${HC.ink}`,
+                transition: 'all .2s cubic-bezier(.34,1.56,.64,1)',
+                transform: isActive ? 'translate(-2px,-2px)' : 'none',
+              }}
+                onMouseEnter={(e) => { if (!isActive) { e.currentTarget.style.transform = 'translate(-1px,-1px) rotate(-1deg)'; e.currentTarget.style.boxShadow = `4px 4px 0 ${HC.ink}`; } }}
+                onMouseLeave={(e) => { if (!isActive) { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = `2px 2px 0 ${HC.ink}`; } }}
+              >
                 {opt.label}
               </button>
             );
@@ -343,8 +447,10 @@ function ProtoShowcase({ mobile = false }) {
       </section>
 
       {/* CATEGORIES (filterable) */}
-      <section style={{ padding: mobile ? '32px 16px' : '60px 40px', background: HC.cream }}>
-        <div style={{ ...HS.mono, fontSize: mobile ? 9 : 11, color: HC.blue, marginBottom: 8 }}>✦ ON THE FLOOR · {visibleCats.length} {visibleCats.length === 1 ? 'category' : 'categories'}</div>
+      <section style={{ padding: mobile ? '32px 16px' : '60px 40px', background: HC.cream, position: 'relative', overflow: 'hidden' }}>
+        <Halftone color={HC.ink} opacity={0.05} dot={2} gap={11} />
+        <ProductPattern color={HC.blue} opacity={0.06} blend="multiply" />
+        <div style={{ position: 'relative', ...HS.mono, fontSize: mobile ? 9 : 11, color: HC.blue, marginBottom: 8 }}>✦ ON THE FLOOR · {visibleCats.length} {visibleCats.length === 1 ? 'category' : 'categories'}</div>
         <h2 style={{ ...HS.display, fontSize: mobile ? 40 : 72, margin: '4px 0 24px', lineHeight: 0.95 }}>
           what we <span style={{ color: HC.magenta, fontStyle: 'italic' }}>stock</span>.
         </h2>
@@ -380,7 +486,23 @@ function ProtoShowcase({ mobile = false }) {
       </section>
 
       {/* BRANDS — animated when filter changes */}
-      <section style={{ padding: mobile ? '40px 16px' : '70px 40px', background: HC.paper }}>
+      <section style={{ padding: mobile ? '40px 16px' : '70px 40px', background: HC.paper, position: 'relative', overflow: 'hidden' }}>
+        <ProductPattern color={HC.ink} opacity={0.05} blend="multiply" />
+        <Halftone color={HC.ink} opacity={0.04} dot={2} gap={10} />
+        {/* SUNNY hat-tipping behind the brand wall */}
+        {!mobile && (
+          <img src="mopbq09z-Sunny_hat.png" alt=""
+            style={{
+              position: 'absolute', right: 20, top: 60,
+              height: 220, width: 'auto', zIndex: 1,
+              transform: 'rotate(6deg)',
+              opacity: 0.92,
+              filter: 'drop-shadow(3px 4px 0 rgba(0,0,0,0.2))',
+              pointerEvents: 'none',
+              animation: 'h-bob 5s ease-in-out infinite',
+            }} />
+        )}
+        <div style={{ position: 'relative' }}>
         <div style={{ ...HS.mono, fontSize: mobile ? 9 : 11, color: HC.blue }}>✦ THE LINE-UP · {visibleBrands.length} brands</div>
         <h2 style={{ ...HS.display, fontSize: mobile ? 40 : 72, margin: '4px 0 24px', lineHeight: 0.95 }}>
           on the <span style={{ color: HC.blue, fontStyle: 'italic' }}>floor</span>.
@@ -405,28 +527,62 @@ function ProtoShowcase({ mobile = false }) {
             no brands match — yet. <a href="#" data-inter onClick={(e) => { e.preventDefault(); setFilter('all'); }} style={{ color: HC.blue }}>show all</a>
           </div>
         )}
+        </div>
       </section>
 
       {/* CALLOUT */}
-      <section style={{ background: HC.ink, color: HC.cream, padding: mobile ? '40px 16px' : '64px 40px', position: 'relative', overflow: 'hidden' }}>
-        <div style={{ position: 'absolute', right: -120, top: -120, opacity: 0.3, pointerEvents: 'none' }}>
-          <Burst size={mobile ? 240 : 420} color={HC.lime} count={28} />
+      <section style={{ background: HC.ink, color: HC.cream, padding: mobile ? '40px 16px' : '80px 40px', position: 'relative', overflow: 'hidden' }}>
+        <Halftone color={HC.cream} opacity={0.06} dot={2} gap={9} />
+        <div style={{ position: 'absolute', right: -120, top: -120, opacity: 0.35, pointerEvents: 'none' }}>
+          <Burst size={mobile ? 240 : 460} color={HC.lime} count={32} />
         </div>
+        <div style={{ position: 'absolute', left: -80, bottom: -80, opacity: 0.18, pointerEvents: 'none' }}>
+          <Rings size={mobile ? 220 : 380} color={HC.amber} count={6} />
+        </div>
+        {!mobile && (
+          <img src="mopbq0bq-Sunny_Woo.png" alt=""
+            style={{
+              position: 'absolute', right: 60, bottom: 30,
+              height: 280, width: 'auto', zIndex: 1,
+              transform: 'rotate(-4deg)',
+              filter: 'drop-shadow(4px 6px 0 rgba(0,0,0,0.36)) drop-shadow(0 14px 22px rgba(0,0,0,0.30))',
+              pointerEvents: 'none',
+              animation: 'h-bob 3.4s ease-in-out infinite',
+            }} />
+        )}
         <div style={{ position: 'relative', display: mobile ? 'block' : 'grid', gridTemplateColumns: '1.4fr 1fr', gap: 48, alignItems: 'center' }}>
           <div>
             <div style={{ ...HS.mono, fontSize: mobile ? 9 : 11, color: HC.lime }}>✦ A QUICK NOTE</div>
             <h2 style={{ ...HS.display, fontSize: mobile ? 44 : 80, lineHeight: 0.95, margin: '8px 0 0', color: HC.cream }}>
               we don't <span style={{ color: HC.magenta, fontStyle: 'italic' }}>do online</span>.
             </h2>
-            <p style={{ ...HS.serif, fontStyle: 'italic', fontSize: mobile ? 16 : 22, lineHeight: 1.45, marginTop: 16, maxWidth: 620, color: 'rgba(245,236,217,0.92)' }}>
-              No carts, no shipping. The floor is the catalog. Call us, DM us,
-              or come in — we'll walk you through what's in stock.
+            <p style={{ ...HS.serif, fontStyle: 'italic', fontSize: mobile ? 18 : 26, lineHeight: 1.35, marginTop: 16, maxWidth: 620, color: 'rgba(245,236,217,0.92)' }}>
+              the floor is the catalog. <br/>
+              call. dm. drop in.
             </p>
           </div>
-          <div style={{ display: 'grid', gap: 12, marginTop: mobile ? 22 : 0 }}>
-            <a data-inter href="tel:4792518581" style={{ background: HC.lime, color: HC.ink, padding: '14px 18px', border: `2px solid ${HC.ink}`, borderRadius: 14, ...HS.alt, fontSize: mobile ? 14 : 18, textDecoration: 'none' }}>✦ call · (479) 251-8581</a>
-            <a data-inter href="#" style={{ background: HC.magenta, color: HC.ink, padding: '14px 18px', border: `2px solid ${HC.ink}`, borderRadius: 14, ...HS.alt, fontSize: mobile ? 14 : 18, textDecoration: 'none' }}>✦ dm @headwaters_provisions</a>
-            <a data-inter href="#" onClick={(e) => { e.preventDefault(); r.navigate('visit'); }} style={{ background: HC.cream, color: HC.ink, padding: '14px 18px', border: `2px solid ${HC.ink}`, borderRadius: 14, ...HS.alt, fontSize: mobile ? 14 : 18, textDecoration: 'none' }}>✦ visit · 4505 W Poplar</a>
+          <div style={{ display: 'grid', gap: 14, marginTop: mobile ? 22 : 0 }}>
+            {[
+              { href: 'tel:4792518581', bg: HC.lime,    label: 'call · (479) 251-8581',     onClick: undefined },
+              { href: '#',              bg: HC.magenta, label: 'dm @headwaters_provisions',  onClick: undefined },
+              { href: '#',              bg: HC.cream,   label: 'visit · 4505 W Poplar',      onClick: (e) => { e.preventDefault(); r.navigate('visit'); } },
+            ].map((cta, i) => (
+              <a key={i} data-inter href={cta.href} onClick={cta.onClick} style={{
+                background: cta.bg, color: HC.ink,
+                padding: mobile ? '16px 20px' : '20px 26px',
+                border: `2.5px solid ${HC.ink}`, borderRadius: 16,
+                ...HS.display, fontSize: mobile ? 22 : 30, lineHeight: 1, letterSpacing: '-0.005em',
+                textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 14,
+                boxShadow: `4px 5px 0 ${HC.ink}`,
+                transition: 'transform .15s cubic-bezier(.34,1.56,.64,1), box-shadow .15s',
+              }}
+                onMouseEnter={(e) => { e.currentTarget.style.transform = 'translate(-2px,-3px) rotate(-0.5deg)'; e.currentTarget.style.boxShadow = `7px 8px 0 ${HC.ink}`; }}
+                onMouseLeave={(e) => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = `4px 5px 0 ${HC.ink}`; }}
+              >
+                <span style={{ fontSize: mobile ? 26 : 36, color: [HC.magenta, HC.lime, HC.tangerine][i] }}>✦</span>
+                <span>{cta.label}</span>
+              </a>
+            ))}
           </div>
         </div>
       </section>
@@ -472,19 +628,44 @@ function ProtoVisit({ mobile = false }) {
           <Rings size={mobile ? 700 : 1100} color={HC.amber} opacity={0.16} />
         </div>
         {!mobile && (
-          <div style={{ position: 'absolute', top: 80, right: 80, transform: 'rotate(-8deg)', filter: `drop-shadow(4px 4px 0 ${HC.ink})` }}>
-            <Mushroom size={140} cap={HC.rose} stem={HC.cream} dots={HC.cream} />
-          </div>
+          <>
+            <div style={{ position: 'absolute', top: 80, right: 80, transform: 'rotate(-8deg)', filter: `drop-shadow(4px 4px 0 ${HC.ink})` }}>
+              <Mushroom size={140} cap={HC.rose} stem={HC.cream} dots={HC.cream} />
+            </div>
+            {/* SUNNY in the rain — outside, waving you in */}
+            <img src="mopbq0b0-Sunny_Rain.png" alt=""
+              style={{
+                position: 'absolute', top: 200, right: 240,
+                height: 200, width: 'auto', zIndex: 2,
+                transform: 'rotate(-6deg)',
+                filter: 'drop-shadow(4px 5px 0 rgba(0,0,0,0.3)) drop-shadow(0 12px 18px rgba(0,0,0,0.25))',
+                pointerEvents: 'none',
+                animation: 'h-bob 4.4s ease-in-out infinite',
+              }} />
+            {/* Falling rain droplets accent */}
+            <svg style={{ position: 'absolute', top: 60, right: 200, width: 200, height: 280, pointerEvents: 'none', opacity: 0.65 }} viewBox="0 0 200 280">
+              {[...Array(7)].map((_, i) => (
+                <ellipse key={i} cx={20 + i * 28} cy={20 + (i % 3) * 24} rx="2" ry="6"
+                  fill={HC.cream}
+                  style={{
+                    transformOrigin: `${20 + i * 28}px 20px`,
+                    animation: `h-rain ${2 + i * 0.3}s linear ${i * 0.2}s infinite`,
+                  }} />
+              ))}
+            </svg>
+          </>
         )}
         <div style={{ position: 'relative', display: mobile ? 'block' : 'grid', gridTemplateColumns: '1fr 1fr', gap: 40 }}>
           <div style={{ color: HC.cream }}>
             <FolioRule n={1} of={3} label="find us · come in" />
             <h1 style={{ ...HS.display, fontSize: mobile ? 80 : 168, margin: '14px 0 0', lineHeight: 0.84, color: HC.cream, textShadow: `5px 5px 0 ${HC.ink}`, letterSpacing: '-0.025em' }}>
-              come <span style={{ color: HC.amber, fontStyle: 'italic', WebkitTextStroke: `2px ${HC.ink}`, paintOrder: 'stroke fill', textShadow: 'none' }}>find</span> us.
+              <span className="h-word h-word-1">come</span>{' '}
+              <span className="h-word h-word-2" style={{ color: HC.amber, fontStyle: 'italic', WebkitTextStroke: `2px ${HC.ink}`, paintOrder: 'stroke fill', textShadow: 'none' }}>find</span>{' '}
+              <span className="h-word h-word-3">us.</span>
             </h1>
-            <p style={{ ...HS.serif, fontStyle: 'italic', fontSize: mobile ? 16 : 22, marginTop: 14, lineHeight: 1.4, maxWidth: 460, color: 'rgba(242,230,201,0.92)' }}>
-              tucked into the source on west poplar. <br/>
-              just walk in — the door's open till eight.
+            <p style={{ ...HS.serif, fontStyle: 'italic', fontSize: mobile ? 18 : 26, marginTop: 14, lineHeight: 1.35, maxWidth: 460, color: 'rgba(242,230,201,0.92)' }}>
+              tucked into the source. <br/>
+              door's open till eight.
             </p>
             <div style={{
               marginTop: 20, display: 'inline-flex', alignItems: 'center', gap: 10,
@@ -502,32 +683,48 @@ function ProtoVisit({ mobile = false }) {
               <div style={{ background: HC.cream, color: HC.ink, padding: mobile ? 18 : 24, borderRadius: 22, border: `2px solid ${HC.ink}`, boxShadow: `6px 6px 0 ${HC.lime}` }}>
                 <div style={{ ...HS.mono, fontSize: 10, color: HC.magenta }}>address</div>
                 <div style={{ ...HS.alt, fontSize: mobile ? 22 : 28, marginTop: 6, lineHeight: 1.1 }}>4505 W Poplar Street<br/>Rogers, AR 72756</div>
-                <div style={{ fontSize: mobile ? 12 : 13, marginTop: 10, lineHeight: 1.5 }}>Inside The Source Craft Cannabis. Walk through the front doors — we're immediately on your right.</div>
+                <div style={{ fontSize: mobile ? 13 : 15, marginTop: 10, lineHeight: 1.5 }}>inside The Source — front doors, immediate right.</div>
                 <a data-inter href="https://maps.google.com/?q=4505+W+Poplar+St+Rogers+AR" target="_blank" rel="noopener" style={{
                   marginTop: 12, display: 'inline-flex', alignItems: 'center', gap: 6,
                   ...HS.mono, fontSize: 10, color: HC.blue, textDecoration: 'none',
                 }}>OPEN IN GOOGLE MAPS ↗</a>
               </div>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
-                <div style={{ background: HC.lime, color: HC.ink, padding: mobile ? 14 : 18, borderRadius: 18, border: `2px solid ${HC.ink}` }}>
-                  <div style={{ ...HS.mono, fontSize: 9 }}>HOURS</div>
-                  <div style={{ marginTop: 6, fontSize: mobile ? 12 : 13, lineHeight: 1.7, ...HS.alt }}>
-                    <div style={{ fontWeight: dow >= 1 && dow <= 5 ? 800 : 400, opacity: dow >= 1 && dow <= 5 ? 1 : 0.7 }}>Mon–Fri · 9–8</div>
-                    <div style={{ fontWeight: dow === 6 ? 800 : 400, opacity: dow === 6 ? 1 : 0.7 }}>Sat · 9–7</div>
-                    <div style={{ fontWeight: dow === 0 ? 800 : 400, opacity: dow === 0 ? 1 : 0.7 }}>Sun · 10–6</div>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
+                <div style={{ background: HC.lime, color: HC.ink, padding: mobile ? 16 : 22, borderRadius: 18, border: `2px solid ${HC.ink}`, boxShadow: `3px 3px 0 ${HC.ink}` }}>
+                  <div style={{ ...HS.mono, fontSize: 10 }}>HOURS</div>
+                  <div style={{ marginTop: 8, ...HS.display, fontSize: mobile ? 18 : 22, lineHeight: 1.45, letterSpacing: '-0.005em' }}>
+                    <div style={{ opacity: dow >= 1 && dow <= 5 ? 1 : 0.55 }}>mon–fri · 9–8</div>
+                    <div style={{ opacity: dow === 6 ? 1 : 0.55 }}>sat · 9–7</div>
+                    <div style={{ opacity: dow === 0 ? 1 : 0.55 }}>sun · 10–6</div>
                   </div>
                 </div>
-                <a data-inter href="tel:4792518581" style={{ background: HC.magenta, color: HC.ink, padding: mobile ? 14 : 18, borderRadius: 18, border: `2px solid ${HC.ink}`, textDecoration: 'none' }}>
-                  <div style={{ ...HS.mono, fontSize: 9 }}>HOLLER</div>
-                  <div style={{ marginTop: 6, fontSize: mobile ? 12 : 13, lineHeight: 1.6, ...HS.alt }}>(479) 251-8581<br/>info@headwatersprovisions.com</div>
+                <a data-inter href="tel:4792518581" style={{ background: HC.magenta, color: HC.ink, padding: mobile ? 16 : 22, borderRadius: 18, border: `2px solid ${HC.ink}`, textDecoration: 'none', boxShadow: `3px 3px 0 ${HC.ink}`, display: 'block', transition: 'transform .15s, box-shadow .15s' }}
+                   onMouseEnter={(e) => { e.currentTarget.style.transform = 'translate(-1px,-2px)'; e.currentTarget.style.boxShadow = `5px 5px 0 ${HC.ink}`; }}
+                   onMouseLeave={(e) => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = `3px 3px 0 ${HC.ink}`; }}>
+                  <div style={{ ...HS.mono, fontSize: 10 }}>HOLLER</div>
+                  <div style={{ marginTop: 8, ...HS.display, fontSize: mobile ? 18 : 22, lineHeight: 1.2, letterSpacing: '-0.005em' }}>(479) 251-8581</div>
+                  <div style={{ marginTop: 4, fontSize: mobile ? 11 : 12, lineHeight: 1.3 }}>info@headwatersprovisions.com</div>
                 </a>
               </div>
             </div>
           </div>
 
           {/* MAP + form */}
-          <div style={{ marginTop: mobile ? 24 : 0 }}>
+          <div style={{ marginTop: mobile ? 24 : 0, position: 'relative' }}>
+            {/* SUNNY at the map pin — standing on the corner of the map */}
+            {!mobile && (
+              <img src="mopbq0bk-Sunny_Walk.png" alt=""
+                style={{
+                  position: 'absolute', right: -34, top: 130,
+                  height: 150, width: 'auto', zIndex: 4,
+                  transform: 'rotate(6deg)',
+                  filter: 'drop-shadow(3px 4px 0 rgba(0,0,0,0.28)) drop-shadow(0 8px 14px rgba(0,0,0,0.18))',
+                  pointerEvents: 'none',
+                  animation: 'h-bob 3.2s ease-in-out infinite',
+                }} />
+            )}
             <div style={{
+              position: 'relative',
               background: HC.cream, color: HC.ink,
               border: `2px solid ${HC.ink}`, borderRadius: 22, overflow: 'hidden',
               boxShadow: `10px 10px 0 ${HC.magenta}`,
@@ -577,17 +774,28 @@ function ProtoVisit({ mobile = false }) {
                   <ProtoInput label="email" type="email" value={form.email} onChange={(v) => setForm({ ...form, email: v })} />
                   <ProtoInput label="what's up?" multiline value={form.msg} onChange={(v) => setForm({ ...form, msg: v })} />
                   <button data-inter type="submit" style={{
-                    marginTop: 4, padding: '14px 22px', background: HC.ink, color: HC.lime,
-                    border: `2px solid ${HC.ink}`, borderRadius: 999, ...HS.alt, fontSize: 16,
-                    boxShadow: `4px 4px 0 ${HC.magenta}`, cursor: 'pointer',
-                  }}>send it →</button>
+                    marginTop: 8, padding: '18px 28px', background: HC.ink, color: HC.lime,
+                    border: `2.5px solid ${HC.ink}`, borderRadius: 999, ...HS.display, fontSize: 28, lineHeight: 1, letterSpacing: '-0.005em',
+                    boxShadow: `5px 6px 0 ${HC.magenta}`, cursor: 'pointer',
+                    transition: 'transform .15s cubic-bezier(.34,1.56,.64,1), box-shadow .15s',
+                  }}
+                  onMouseEnter={(e) => { e.currentTarget.style.transform = 'translate(-2px,-3px) rotate(-0.6deg)'; e.currentTarget.style.boxShadow = `8px 9px 0 ${HC.magenta}`; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = `5px 6px 0 ${HC.magenta}`; }}
+                  >send it →</button>
                 </form>
               ) : (
-                <div style={{ padding: 20, textAlign: 'center' }}>
-                  <div style={{ ...HS.display, fontSize: 56, color: HC.blue }}>✦</div>
-                  <div style={{ ...HS.alt, fontSize: 22, marginTop: 6 }}>got it, {form.name.split(' ')[0]}.</div>
-                  <p style={{ ...HS.serif, fontStyle: 'italic', fontSize: 16, marginTop: 8, lineHeight: 1.5 }}>
-                    we usually holler back within a day. in the meantime, come visit.
+                <div style={{ padding: 20, textAlign: 'center', position: 'relative' }}>
+                  {/* SUNNY jumping in celebration */}
+                  <img src="mopbq0ae-Sunny_jump.png" alt=""
+                    style={{
+                      width: 'auto', height: 180, display: 'block', margin: '0 auto',
+                      animation: 'h-jump 1.6s cubic-bezier(.34,1.56,.64,1) infinite',
+                      filter: 'drop-shadow(4px 6px 0 rgba(0,0,0,0.25))',
+                      transformOrigin: 'center bottom',
+                    }} />
+                  <div style={{ ...HS.alt, fontSize: 32, marginTop: 10 }}>got it, {form.name.split(' ')[0]}.</div>
+                  <p style={{ ...HS.serif, fontStyle: 'italic', fontSize: 18, marginTop: 8, lineHeight: 1.4 }}>
+                    we'll holler back within a day. in the meantime — come visit.
                   </p>
                   <button data-inter onClick={() => { setSubmitted(false); setForm({ name: '', email: '', msg: '' }); }} style={{
                     marginTop: 14, padding: '8px 16px', background: HC.cream, color: HC.ink,
@@ -637,30 +845,54 @@ function ProtoInput({ label, value, onChange, multiline, type = 'text' }) {
 function ProtoFooter({ mobile = false }) {
   const r = useRouter();
   return (
-    <footer style={{ background: HC.blueDark, color: HC.cream, padding: mobile ? '40px 16px 20px' : '64px 40px 28px', position: 'relative', overflow: 'hidden' }}>
+    <footer style={{ background: HC.blueDark, color: HC.cream, padding: mobile ? '60px 16px 20px' : '92px 40px 28px', position: 'relative', overflow: 'hidden' }}>
+      <Halftone color={HC.cream} opacity={0.06} dot={2} gap={9} />
       <div style={{ position: 'absolute', right: -120, bottom: -120, opacity: 0.18, pointerEvents: 'none' }}>
-        <Rings size={520} color={HC.lime} />
+        <Rings size={520} color={HC.lime} count={7} />
       </div>
+      <div style={{ position: 'absolute', left: -90, top: -90, opacity: 0.22, pointerEvents: 'none' }}>
+        <Burst size={360} color={HC.amber} count={28} opacity={0.5} />
+      </div>
+      {!mobile && (
+        <div style={{ position: 'absolute', right: 80, bottom: 40, opacity: 0.45, pointerEvents: 'none' }}>
+          <Smoke size={180} color={HC.cream} opacity={0.5} />
+        </div>
+      )}
+      {/* Sunny waving from the bottom-right of the footer */}
+      <img src="mopbq0bq-Sunny_Woo.png" alt=""
+        style={{
+          position: 'absolute', right: mobile ? -20 : 60, bottom: -10,
+          height: mobile ? 180 : 280, width: 'auto',
+          transform: 'rotate(-4deg)',
+          filter: 'drop-shadow(3px 4px 0 rgba(0,0,0,0.25)) drop-shadow(0 12px 18px rgba(0,0,0,0.30))',
+          pointerEvents: 'none', zIndex: 1,
+        }} />
       <svg viewBox="0 0 1440 24" preserveAspectRatio="none" style={{
         position: 'absolute', top: -1, left: 0, width: '100%', height: 24, transform: 'scaleY(-1)',
       }}>
         <path d="M0 24 L0 8 Q 60 0, 120 8 T 240 8 T 360 8 T 480 8 T 600 8 T 720 8 T 840 8 T 960 8 T 1080 8 T 1200 8 T 1320 8 T 1440 8 L 1440 24 Z" fill={HC.blueDark} />
       </svg>
-      <div style={{ position: 'relative', display: 'grid', gridTemplateColumns: mobile ? '1fr' : '2fr 1fr 1fr 1fr', gap: mobile ? 24 : 40, marginBottom: 32 }}>
+      <div style={{ position: 'relative', display: 'grid', gridTemplateColumns: mobile ? '1fr' : '2fr 1fr 1fr 1fr', gap: mobile ? 24 : 40, marginBottom: 32, zIndex: 2 }}>
         <div>
           {!mobile && (
-            <div style={{ position: 'relative', width: 140, height: 140 }}>
+            <div style={{ position: 'relative', width: 160, height: 160 }}>
               <div style={{ position: 'absolute', inset: 0, animation: 'h-spin 28s linear infinite' }}>
-                <CurvedText text="✦ stay heady · headwaters · " radius={58} fontSize={11} color={HC.lime} />
+                <CurvedText text="✦ stay heady · headwaters · " radius={68} fontSize={12} color={HC.lime} />
               </div>
-              <div style={{ position: 'absolute', inset: 30 }}>
-                <HWMark size={80} ring={HC.cream} />
-              </div>
+              <img src="mopborf7-Icon-White.png" alt=""
+                style={{ position: 'absolute', inset: 28, width: 104, height: 104, objectFit: 'contain',
+                  filter: 'drop-shadow(2px 2px 0 rgba(0,0,0,0.3))' }} />
             </div>
           )}
-          <div style={{ ...HS.display, fontSize: mobile ? 40 : 56, color: HC.cream, lineHeight: 0.9, marginTop: mobile ? 0 : 16 }}>headwaters</div>
-          <div style={{ ...HS.serif, fontStyle: 'italic', fontSize: mobile ? 16 : 20, color: HC.lime, marginTop: 6 }}>
+          <img src="mopborf3-Horizontal-White.png" alt="Headwaters Provisions"
+            style={{ height: mobile ? 42 : 64, width: 'auto', display: 'block', marginTop: mobile ? 0 : 18,
+              filter: 'drop-shadow(2px 2px 0 rgba(0,0,0,0.25))' }} />
+          <div style={{ ...HS.serif, fontStyle: 'italic', fontSize: mobile ? 18 : 22, color: HC.lime, marginTop: 10 }}>
             "where's your head at?"
+          </div>
+          <div style={{ marginTop: 12, display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+            <span style={{ ...HS.mono, fontSize: 9, color: HC.cream, padding: '6px 12px', border: `1.5px solid rgba(245,236,217,0.4)`, borderRadius: 999, letterSpacing: '0.16em' }}>NWA · ROGERS AR</span>
+            <span style={{ ...HS.mono, fontSize: 9, color: HC.amber, padding: '6px 12px', border: `1.5px solid ${HC.amber}`, borderRadius: 999, letterSpacing: '0.16em' }}>EST. 2024</span>
           </div>
         </div>
         {[

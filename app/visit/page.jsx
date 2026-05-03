@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { useMobile } from '../../hooks/useMobile';
 import { HC, HS } from '../../components/design/tokens';
-import { Rings, Mushroom, Halftone } from '../../components/design/base';
+import { Rings, Mushroom, Halftone, Sunny } from '../../components/design/base';
 import { FolioRule } from '../../components/design/interactions';
 import { Nav, MobileNav } from '../../components/nav';
 import { Footer } from '../../components/footer';
@@ -66,9 +66,29 @@ export default function Visit() {
           <Rings size={mobile ? 700 : 1100} color={HC.amber} opacity={0.16} />
         </div>
         {!mobile && (
-          <div style={{ position: 'absolute', top: 80, right: 80, transform: 'rotate(-8deg)', filter: `drop-shadow(4px 4px 0 ${HC.ink})` }}>
-            <Mushroom size={140} cap={HC.rose} stem={HC.cream} dots={HC.cream} />
-          </div>
+          <>
+            <div style={{ position: 'absolute', top: 80, right: 80, transform: 'rotate(-8deg)', filter: `drop-shadow(4px 4px 0 ${HC.ink})` }}>
+              <Mushroom size={140} cap={HC.rose} stem={HC.cream} dots={HC.cream} />
+            </div>
+            {/* Sunny in the rain — outside, waving you in */}
+            <Sunny pose="rain" size={180} rotate={-6}
+              style={{
+                position: 'absolute', top: 200, right: 240, zIndex: 2,
+                filter: 'drop-shadow(4px 5px 0 rgba(0,0,0,0.3)) drop-shadow(0 12px 18px rgba(0,0,0,0.25))',
+                pointerEvents: 'none',
+                animation: 'h-bob-rot 4.4s ease-in-out infinite',
+              }} />
+            <svg style={{ position: 'absolute', top: 60, right: 200, width: 200, height: 280, pointerEvents: 'none', opacity: 0.65 }} viewBox="0 0 200 280">
+              {[...Array(7)].map((_, i) => (
+                <ellipse key={i} cx={20 + i * 28} cy={20 + (i % 3) * 24} rx="2" ry="6"
+                  fill={HC.cream}
+                  style={{
+                    transformOrigin: `${20 + i * 28}px 20px`,
+                    animation: `h-rain ${2 + i * 0.3}s linear ${i * 0.2}s infinite`,
+                  }} />
+              ))}
+            </svg>
+          </>
         )}
         <div style={{ position: 'relative', display: mobile ? 'block' : 'grid', gridTemplateColumns: '1fr 1fr', gap: 40 }}>
 
@@ -79,13 +99,13 @@ export default function Visit() {
               ...HS.display, fontSize: mobile ? 80 : 168, margin: '14px 0 0', lineHeight: 0.84,
               color: HC.cream, textShadow: `5px 5px 0 ${HC.ink}`, letterSpacing: '-0.025em',
             }}>
-              come{' '}
-              <span style={{ color: HC.amber, fontStyle: 'italic', WebkitTextStroke: `2px ${HC.ink}`, paintOrder: 'stroke fill', textShadow: 'none' }}>find</span>{' '}
-              us.
+              <span className="h-word h-word-1">come</span>{' '}
+              <span className="h-word h-word-2" style={{ color: HC.amber, fontStyle: 'italic', WebkitTextStroke: `2px ${HC.ink}`, paintOrder: 'stroke fill', textShadow: 'none', display: 'inline-block' }}>find</span>{' '}
+              <span className="h-word h-word-3">us.</span>
             </h1>
-            <p style={{ ...HS.serif, fontStyle: 'italic', fontSize: mobile ? 16 : 22, marginTop: 14, lineHeight: 1.4, maxWidth: 460, color: 'rgba(242,230,201,0.92)' }}>
-              tucked into the source on west poplar.<br />
-              just walk in — the door's open till eight.
+            <p style={{ ...HS.serif, fontStyle: 'italic', fontSize: mobile ? 18 : 26, marginTop: 14, lineHeight: 1.35, maxWidth: 460, color: 'rgba(242,230,201,0.92)' }}>
+              tucked into the source.<br />
+              door&apos;s open till eight.
             </p>
 
             <div style={{
@@ -108,38 +128,50 @@ export default function Visit() {
                   4505 W Poplar Street<br />Rogers, AR 72756
                 </div>
                 <div style={{ fontSize: mobile ? 12 : 13, marginTop: 10, lineHeight: 1.5 }}>
-                  Inside The Source Craft Cannabis. Walk through the front doors — we're immediately on your right.
+                  Inside The Source — front doors, immediate right.
                 </div>
                 <a href="https://maps.google.com/?q=4505+W+Poplar+St+Rogers+AR" target="_blank" rel="noopener" style={{
                   marginTop: 12, display: 'inline-flex', alignItems: 'center', gap: 6,
                   ...HS.mono, fontSize: 10, color: HC.blue, textDecoration: 'none',
                 }}>OPEN IN GOOGLE MAPS ↗</a>
               </div>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
-                <div style={{ background: HC.lime, color: HC.ink, padding: mobile ? 14 : 18, borderRadius: 18, border: `2px solid ${HC.ink}` }}>
-                  <div style={{ ...HS.mono, fontSize: 9 }}>HOURS</div>
-                  <div style={{ marginTop: 6, fontSize: mobile ? 12 : 13, lineHeight: 1.7, ...HS.alt }}>
-                    <div style={{ fontWeight: dow >= 1 && dow <= 5 ? 800 : 400, opacity: dow >= 1 && dow <= 5 ? 1 : 0.7 }}>Mon–Fri · 9–8</div>
-                    <div style={{ fontWeight: dow === 6 ? 800 : 400, opacity: dow === 6 ? 1 : 0.7 }}>Sat · 9–7</div>
-                    <div style={{ fontWeight: dow === 0 ? 800 : 400, opacity: dow === 0 ? 1 : 0.7 }}>Sun · 10–6</div>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
+                <div style={{ background: HC.lime, color: HC.ink, padding: mobile ? 16 : 22, borderRadius: 18, border: `2px solid ${HC.ink}`, boxShadow: `3px 3px 0 ${HC.ink}` }}>
+                  <div style={{ ...HS.mono, fontSize: 10 }}>HOURS</div>
+                  <div style={{ marginTop: 8, ...HS.display, fontSize: mobile ? 18 : 22, lineHeight: 1.45, letterSpacing: '-0.005em', textTransform: 'lowercase' }}>
+                    <div style={{ opacity: dow >= 1 && dow <= 5 ? 1 : 0.55 }}>mon–fri · 9–8</div>
+                    <div style={{ opacity: dow === 6 ? 1 : 0.55 }}>sat · 9–7</div>
+                    <div style={{ opacity: dow === 0 ? 1 : 0.55 }}>sun · 10–6</div>
                   </div>
                 </div>
                 <a href="tel:4792518581" style={{
-                  background: HC.magenta, color: HC.ink, padding: mobile ? 14 : 18,
-                  borderRadius: 18, border: `2px solid ${HC.ink}`, textDecoration: 'none', display: 'block',
-                }}>
-                  <div style={{ ...HS.mono, fontSize: 9 }}>HOLLER</div>
-                  <div style={{ marginTop: 6, fontSize: mobile ? 12 : 13, lineHeight: 1.6, ...HS.alt }}>
-                    (479) 251-8581<br />info@headwatersprovisions.com
-                  </div>
+                  background: HC.magenta, color: HC.ink, padding: mobile ? 16 : 22,
+                  borderRadius: 18, border: `2px solid ${HC.ink}`, textDecoration: 'none', boxShadow: `3px 3px 0 ${HC.ink}`,
+                  display: 'block', transition: 'transform .15s, box-shadow .15s',
+                }}
+                  onMouseEnter={(e) => { e.currentTarget.style.transform = 'translate(-1px,-2px)'; e.currentTarget.style.boxShadow = `5px 5px 0 ${HC.ink}`; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = `3px 3px 0 ${HC.ink}`; }}>
+                  <div style={{ ...HS.mono, fontSize: 10 }}>HOLLER</div>
+                  <div style={{ marginTop: 8, ...HS.display, fontSize: mobile ? 18 : 22, lineHeight: 1.2, letterSpacing: '-0.005em' }}>(479) 251-8581</div>
+                  <div style={{ marginTop: 4, fontSize: mobile ? 11 : 12, lineHeight: 1.3 }}>info@headwatersprovisions.com</div>
                 </a>
               </div>
             </div>
           </div>
 
           {/* RIGHT: map + form */}
-          <div style={{ marginTop: mobile ? 24 : 0 }}>
+          <div style={{ marginTop: mobile ? 24 : 0, position: 'relative' }}>
+            {!mobile && (
+              <Sunny pose="love" size={130} rotate={6}
+                style={{
+                  position: 'absolute', right: -34, top: 130, zIndex: 4,
+                  filter: 'drop-shadow(3px 4px 0 rgba(0,0,0,0.28)) drop-shadow(0 8px 14px rgba(0,0,0,0.18))',
+                  pointerEvents: 'none',
+                  animation: 'h-bob-rot 3.2s ease-in-out infinite',
+                }} />
+            )}
             <div style={{
+              position: 'relative',
               background: HC.cream, color: HC.ink,
               border: `2px solid ${HC.ink}`, borderRadius: 22, overflow: 'hidden',
               boxShadow: `10px 10px 0 ${HC.magenta}`,
@@ -158,7 +190,7 @@ export default function Visit() {
                 <text x="20" y="155" fontFamily={'"IBM Plex Mono", monospace'} fontSize="10" fill={HC.ink}>W POPLAR ST</text>
                 <g transform="translate(360 140)" style={{ animation: 'h-bob 2.4s ease-in-out infinite' }}>
                   <circle r="22" fill={HC.magenta} stroke={HC.ink} strokeWidth="2" />
-                  <text textAnchor="middle" dy="6" fontFamily={'"Bowlby One SC", serif'} fontSize="22" fill={HC.cream}>✦</text>
+                  <text textAnchor="middle" dy="6" fontFamily={'"Holtzman Rounded", "Bowlby One SC", serif'} fontSize="22" fill={HC.cream}>✦</text>
                   <line x1="0" y1="22" x2="0" y2="40" stroke={HC.ink} strokeWidth="2" />
                 </g>
                 <g transform="translate(360 200)">
@@ -183,18 +215,30 @@ export default function Visit() {
                   <Input label="your name" value={form.name} onChange={(v) => setForm({ ...form, name: v })} />
                   <Input label="email" type="email" value={form.email} onChange={(v) => setForm({ ...form, email: v })} />
                   <Input label="what's up?" multiline value={form.msg} onChange={(v) => setForm({ ...form, msg: v })} />
-                  <button type="submit" style={{
-                    marginTop: 4, padding: '14px 22px', background: HC.ink, color: HC.lime,
-                    border: `2px solid ${HC.ink}`, borderRadius: 999, ...HS.alt, fontSize: 16,
-                    boxShadow: `4px 4px 0 ${HC.magenta}`, cursor: 'pointer',
-                  }}>send it →</button>
+                  <button data-confetti type="submit" style={{
+                    marginTop: 8, padding: '18px 28px', background: HC.ink, color: HC.lime,
+                    border: `2.5px solid ${HC.ink}`, borderRadius: 999,
+                    ...HS.display, fontSize: 28, lineHeight: 1, letterSpacing: '-0.005em', textTransform: 'lowercase',
+                    boxShadow: `5px 6px 0 ${HC.magenta}`, cursor: 'pointer',
+                    transition: 'transform .15s cubic-bezier(.34,1.56,.64,1), box-shadow .15s',
+                  }}
+                    onMouseEnter={(e) => { e.currentTarget.style.transform = 'translate(-2px,-3px) rotate(-0.6deg)'; e.currentTarget.style.boxShadow = `8px 9px 0 ${HC.magenta}`; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = `5px 6px 0 ${HC.magenta}`; }}
+                  >send it →</button>
                 </form>
               ) : (
-                <div style={{ padding: 20, textAlign: 'center' }}>
-                  <div style={{ ...HS.display, fontSize: 56, color: HC.blue }}>✦</div>
-                  <div style={{ ...HS.alt, fontSize: 22, marginTop: 6 }}>got it, {form.name.split(' ')[0]}.</div>
-                  <p style={{ ...HS.serif, fontStyle: 'italic', fontSize: 16, marginTop: 8, lineHeight: 1.5 }}>
-                    we usually holler back within a day. in the meantime, come visit.
+                <div style={{ padding: 20, textAlign: 'center', position: 'relative' }}>
+                  {/* Sunny celebration */}
+                  <Sunny pose="jump" size={160}
+                    style={{
+                      margin: '0 auto',
+                      animation: 'h-jump 1.6s cubic-bezier(.34,1.56,.64,1) infinite',
+                      filter: 'drop-shadow(4px 6px 0 rgba(0,0,0,0.25))',
+                      transformOrigin: 'center bottom',
+                    }} />
+                  <div style={{ ...HS.alt, fontSize: 32, marginTop: 10 }}>got it, {form.name.split(' ')[0]}.</div>
+                  <p style={{ ...HS.serif, fontStyle: 'italic', fontSize: 18, marginTop: 8, lineHeight: 1.4 }}>
+                    we&apos;ll holler back within a day. in the meantime — come visit.
                   </p>
                   <button onClick={() => { setSubmitted(false); setForm({ name: '', email: '', msg: '' }); }} style={{
                     marginTop: 14, padding: '8px 16px', background: HC.cream, color: HC.ink,

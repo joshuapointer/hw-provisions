@@ -19,12 +19,61 @@
   @keyframes h-card-in { from { opacity: 0; transform: translateY(8px) } to { opacity: 1; transform: none } }
   @keyframes h-pulse { 0%, 100% { transform: scale(1); opacity: 1 } 50% { transform: scale(1.5); opacity: 0.5 } }
   @keyframes h-bob { 0%, 100% { transform: translateY(0) } 50% { transform: translateY(-4px) } }
-  @keyframes h-page { from { opacity: 0; transform: translateY(8px) } to { opacity: 1; transform: none } }
 
-  /* Page transition wrapper */
-  .h-page-enter { animation: h-page .35s ease-out; }
-  .h-transitioning { opacity: 0; transition: opacity .22s; }
-  .h-transitioning-active { opacity: 1; }
+  /* Page transitions — slide + lift, with directional flavor */
+  @keyframes h-page-in-forward {
+    from { opacity: 0; transform: translateX(36px) translateY(6px); }
+    to   { opacity: 1; transform: none; }
+  }
+  @keyframes h-page-in-back {
+    from { opacity: 0; transform: translateX(-36px) translateY(6px); }
+    to   { opacity: 1; transform: none; }
+  }
+  /* First-paint stagger reveal for hero content */
+  @keyframes h-rise-in {
+    from { opacity: 0; transform: translateY(18px); filter: blur(4px); }
+    to   { opacity: 1; transform: none; filter: blur(0); }
+  }
+  @keyframes h-word-in {
+    from { opacity: 0; transform: translateY(40%) rotate(-2deg); }
+    to   { opacity: 1; transform: none; }
+  }
+  /* Hover wobble for nav decoration */
+  @keyframes h-wiggle {
+    0%, 100% { transform: rotate(0deg); }
+    25%      { transform: rotate(-2deg); }
+    75%      { transform: rotate(2deg); }
+  }
+
+  .h-page-enter-forward { animation: h-page-in-forward .42s cubic-bezier(.16,.84,.32,1) both; }
+  .h-page-enter-back    { animation: h-page-in-back    .42s cubic-bezier(.16,.84,.32,1) both; }
+
+  /* Hero stagger — apply to first section's grandchildren */
+  .h-stagger > * { opacity: 0; animation: h-rise-in .55s cubic-bezier(.16,.84,.32,1) both; }
+  .h-stagger > *:nth-child(1) { animation-delay: .04s; }
+  .h-stagger > *:nth-child(2) { animation-delay: .12s; }
+  .h-stagger > *:nth-child(3) { animation-delay: .20s; }
+  .h-stagger > *:nth-child(4) { animation-delay: .28s; }
+  .h-stagger > *:nth-child(5) { animation-delay: .36s; }
+  .h-stagger > *:nth-child(6) { animation-delay: .44s; }
+
+  /* Hero word reveal */
+  .h-word { display: inline-block; opacity: 0; animation: h-word-in .55s cubic-bezier(.34,1.56,.64,1) both; }
+  .h-word-1 { animation-delay: .15s; }
+  .h-word-2 { animation-delay: .30s; }
+  .h-word-3 { animation-delay: .45s; }
+
+  /* Smooth focus ring on inputs */
+  [data-inter]:focus-visible {
+    outline: 3px solid #E6A933;
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+
+  /* Reduced-motion respect */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+  }
 
   /* Hide native cursor over interactive elements when custom cursor enabled */
   [data-cursor="custom"] [data-inter] { cursor: none !important; }
@@ -74,10 +123,10 @@
       <div ref={stageRef} style={{ position: 'relative', width: '100%', overflow: 'hidden' }}>
         <div
           key={r.route}
-          className="h-page-enter"
+          className={r.direction === 'back' ? 'h-page-enter-back' : 'h-page-enter-forward'}
           style={{
             opacity: r.transitioning ? 0 : 1,
-            transition: 'opacity .22s ease',
+            transition: 'opacity .18s ease-out',
           }}
         >
           <Page mobile={mobile} />
@@ -150,13 +199,13 @@
           <TweakSelect
             label="Display font"
             value={t.displayFont}
-            options={['Shrikhand', 'Bowlby One SC', 'Bricolage Grotesque', 'Fraunces']}
+            options={['Holtzman Rounded', 'Shrikhand', 'Bowlby One SC', 'Bricolage Grotesque', 'Fraunces']}
             onChange={(v) => setTweak('displayFont', v)}
           />
           <TweakSelect
             label="Body font"
             value={t.bodyFont}
-            options={['Space Grotesk', 'Bricolage Grotesque', 'DM Mono', 'Fraunces']}
+            options={['Gunnar', 'Sonoran', 'Space Grotesk', 'Bricolage Grotesque', 'DM Mono', 'Fraunces']}
             onChange={(v) => setTweak('bodyFont', v)}
           />
           <TweakSection label="Feel" />

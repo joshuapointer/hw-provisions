@@ -19,10 +19,10 @@ export const HC = {
 };
 
 export const HS = {
-  page: { fontFamily: '"Space Grotesk", sans-serif', color: '#1A1207', background: '#F2E6C9' },
-  display: { fontFamily: '"Bowlby One SC", "Shrikhand", serif', letterSpacing: '-0.01em', fontWeight: 400 },
-  hand: { fontFamily: '"Caveat", cursive', fontWeight: 700, letterSpacing: '0' },
-  alt: { fontFamily: '"Bricolage Grotesque", sans-serif', fontWeight: 800, letterSpacing: '-0.03em' },
+  page: { fontFamily: '"Gunnar", "Space Grotesk", sans-serif', color: '#1A1207', background: '#F2E6C9' },
+  display: { fontFamily: '"Holtzman Rounded", "Shrikhand", "Bowlby One SC", serif', letterSpacing: '-0.01em', fontWeight: 400 },
+  alt: { fontFamily: '"Holtzman Rounded", "Bricolage Grotesque", sans-serif', fontWeight: 800, letterSpacing: '-0.02em' },
+  hand: { fontFamily: '"Sonoran", "Caveat", cursive', fontWeight: 700, letterSpacing: '0' },
   serif: { fontFamily: '"Fraunces", serif', fontVariationSettings: '"opsz" 144, "SOFT" 50' },
   mono: { fontFamily: '"IBM Plex Mono", monospace', fontSize: 11, letterSpacing: '0.08em', textTransform: 'uppercase' },
 };

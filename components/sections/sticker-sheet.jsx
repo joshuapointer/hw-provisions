@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { HC, HS } from '../design/tokens';
-import { Halftone } from '../design/base';
+import { Halftone, Sunny } from '../design/base';
 import { GLYPHS } from '../design/glyphs';
 import { FolioRule, spawnGlyphConfetti } from '../design/interactions';
 
@@ -37,6 +37,14 @@ export function StickerSheet({ mobile = false }) {
           padding: mobile ? '32px 16px' : '40px 32px', position: 'relative',
           boxShadow: `8px 10px 0 ${HC.ink}`,
         }}>
+          {!mobile && (
+            <Sunny pose="face" size={90} rotate={-10}
+              style={{
+                position: 'absolute', top: -40, right: 40, zIndex: 4,
+                filter: 'drop-shadow(3px 4px 0 rgba(0,0,0,0.25))',
+                pointerEvents: 'none',
+              }} />
+          )}
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', borderBottom: `1.5px dashed ${HC.smoke}`, paddingBottom: 12, marginBottom: 24 }}>
             <div style={{ ...HS.mono, fontSize: 10, letterSpacing: '0.2em', color: HC.smoke }}>
               HEADWATERS PROVISIONS · NWA · STICKER SHEET № 04

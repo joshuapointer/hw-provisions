@@ -122,13 +122,32 @@ function ProtoBehindCounter({ mobile = false }) {
   return (
     <section style={{ background: HC.blueDark, color: HC.cream, padding: mobile ? '60px 16px' : '120px 40px', position: 'relative', overflow: 'hidden' }}>
       <Halftone color={HC.cream} opacity={0.06} dot={2} gap={9} />
+      <ProductPattern color={HC.cream} opacity={0.06} blend="screen" />
       <div style={{ position: 'absolute', top: 60, right: -40, opacity: 0.15, pointerEvents: 'none' }}>
         <NumGlyph n="11" size={300} color={HC.amber} />
       </div>
+      {/* SUNNY smoking — chillin' behind the counter */}
+      {!mobile && (
+        <img src="mopbq0b8-Sunny_Smoking.PNG" alt=""
+          style={{
+            position: 'absolute', left: 30, top: 90,
+            height: 240, width: 'auto', zIndex: 1,
+            transform: 'rotate(-4deg)',
+            filter: 'drop-shadow(4px 5px 0 rgba(0,0,0,0.35)) drop-shadow(0 12px 18px rgba(0,0,0,0.30))',
+            pointerEvents: 'none',
+            animation: 'h-bob 5.2s ease-in-out infinite',
+          }} />
+      )}
+      {/* Smoke clouds rising from Sunny */}
+      {!mobile && (
+        <div style={{ position: 'absolute', left: 110, top: 30, opacity: 0.55, pointerEvents: 'none' }}>
+          <Smoke size={140} color={HC.cream} opacity={0.5} />
+        </div>
+      )}
 
       <div style={{ position: 'relative', maxWidth: 1280, margin: '0 auto' }}>
         <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', flexWrap: 'wrap', gap: 24, marginBottom: 56 }}>
-          <div>
+          <div style={{ marginLeft: mobile ? 0 : 280 }}>
             <FolioRule n={3} of={6} label="behind the counter" />
             <h2 style={{ ...HS.display, fontSize: mobile ? 64 : 132, lineHeight: 0.85, margin: '12px 0 0', color: HC.cream }}>
               what's<br/>
@@ -248,6 +267,19 @@ function ProtoStickerSheet({ mobile = false }) {
   return (
     <section style={{ background: HC.cream, padding: mobile ? '60px 16px 80px' : '120px 40px', position: 'relative', overflow: 'hidden' }}>
       <Halftone color={HC.ink} opacity={0.06} dot={2} gap={11} />
+      <ProductPattern color={HC.haze} opacity={0.07} blend="multiply" />
+      {/* Floating Sunny face as the "cover" sticker — looks pasted on the sheet */}
+      {!mobile && (
+        <img src="mopbq09v-Headwaters_Face.png" alt=""
+          style={{
+            position: 'absolute', right: 110, top: 60,
+            height: 180, width: 'auto', zIndex: 4,
+            transform: 'rotate(8deg)',
+            filter: 'drop-shadow(4px 5px 0 rgba(0,0,0,0.28)) drop-shadow(0 10px 14px rgba(0,0,0,0.18))',
+            pointerEvents: 'none',
+            animation: 'h-bob-rot 4.6s ease-in-out infinite',
+          }} />
+      )}
       <div style={{ position: 'relative', maxWidth: 1280, margin: '0 auto' }}>
 
         <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', flexWrap: 'wrap', gap: 24, marginBottom: 48 }}>

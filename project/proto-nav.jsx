@@ -7,8 +7,8 @@
 /* Tweakable defaults — host rewrites this block */
 const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
   "palette": "heady",
-  "displayFont": "Shrikhand",
-  "bodyFont": "Space Grotesk",
+  "displayFont": "Holtzman Rounded",
+  "bodyFont": "Gunnar",
   "density": "regular",
   "novelInteractions": true
 }/*EDITMODE-END*/;
@@ -83,24 +83,32 @@ function ProtoNav({ active, tone = 'light' }) {
         </svg>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <a data-inter href="#" onClick={(e) => { e.preventDefault(); r.navigate('home'); }} style={{ display: 'flex', alignItems: 'center', gap: 18, textDecoration: 'none', color: fg }}>
-            <div style={{ position: 'relative', width: 80, height: 80 }}>
+            <div style={{ position: 'relative', width: 96, height: 96, flexShrink: 0 }}>
               <div ref={emblemRef} style={{ position: 'absolute', inset: 0 }}>
-                <CurvedText text="✦ where's your head at? · " radius={32} fontSize={9} color={fg} />
+                <CurvedText text="✦ where's your head at? · " radius={40} fontSize={10} color={fg} />
               </div>
-              <div style={{ position: 'absolute', inset: 18 }}>
-                <HWMark size={44} ring={HC.ink} />
-              </div>
+              <img src={dark ? 'mopborf7-Icon-White.png' : 'mopborf6-Icon-Blue.png'}
+                   alt=""
+                   style={{
+                     position: 'absolute', inset: 18, width: 60, height: 60,
+                     objectFit: 'contain',
+                     filter: dark ? 'none' : `drop-shadow(2px 2px 0 rgba(0,0,0,0.18))`,
+                   }} />
             </div>
             <div>
-              <div style={{ ...HS.display, fontSize: 28, lineHeight: 1, color: fg }}>headwaters</div>
-              <div style={{ ...HS.serif, fontStyle: 'italic', fontSize: 14, color: dark ? HC.lime : HC.blue, marginTop: 2 }}>
-                provisions · NWA
+              <img src={dark ? 'mopborf3-Horizontal-White.png' : 'mopborf1-Horizontal-Blue.png'}
+                   alt="Headwaters Provisions"
+                   style={{ height: 56, width: 'auto', display: 'block', filter: 'drop-shadow(2px 2px 0 rgba(0,0,0,0.12))' }} />
+              <div style={{ ...HS.serif, fontStyle: 'italic', fontSize: 16, color: dark ? HC.lime : HC.blue, marginTop: 6, letterSpacing: '0.02em' }}>
+                "where's your <span style={{ color: dark ? HC.amber : HC.magenta }}>head at?</span>"
               </div>
             </div>
           </a>
           <ProtoArcLinks links={links} active={active} fg={fg} />
-          <a data-inter href="#" onClick={(e) => { e.preventDefault(); r.navigate('visit'); }} style={{ textDecoration: 'none' }}>
-            <StampButton label="OPEN · 9 TO 8 · " center="✦" color={HC.lime} fg={HC.ink} size={92} rotate={-6} />
+          <a data-inter href="#" onClick={(e) => { e.preventDefault(); r.navigate('visit'); }} style={{ textDecoration: 'none', display: 'inline-block', transition: 'transform .25s cubic-bezier(.34,1.56,.64,1)' }}
+             onMouseEnter={(e) => e.currentTarget.style.transform = 'rotate(8deg) scale(1.08)'}
+             onMouseLeave={(e) => e.currentTarget.style.transform = 'rotate(0deg) scale(1)'}>
+            <StampButton label="OPEN · 9 TO 8 · " center="✦" color={HC.lime} fg={HC.ink} size={116} rotate={-6} />
           </a>
         </div>
       </nav>
@@ -110,30 +118,40 @@ function ProtoNav({ active, tone = 'light' }) {
 
 function ProtoArcLinks({ links, active, fg }) {
   const r = useRouter();
+  const [hover, setHover] = React.useState(null);
   return (
-    <div style={{ display: 'flex', alignItems: 'flex-end', gap: 28, position: 'relative' }}>
+    <div style={{ display: 'flex', alignItems: 'flex-end', gap: 36, position: 'relative' }}>
       {links.map((l, i) => {
         const offset = [-2, 6, -4][i % 3];
         const rotate = [-2, 1, -1][i % 3];
         const isActive = active === l.k;
         const accents = [HC.magenta, HC.lime, HC.tangerine];
+        const isHover = hover === l.k && !isActive;
         return (
-          <a data-inter key={l.k} href="#" onClick={(e) => { e.preventDefault(); r.navigate(l.k); }} style={{
+          <a data-inter key={l.k} href="#"
+            onMouseEnter={() => setHover(l.k)}
+            onMouseLeave={() => setHover(null)}
+            onClick={(e) => { e.preventDefault(); r.navigate(l.k); }} style={{
             position: 'relative',
-            transform: `translateY(${offset}px) rotate(${rotate}deg)`,
-            ...HS.alt, fontSize: 18,
+            transform: `translateY(${offset + (isHover ? -3 : 0)}px) rotate(${rotate + (isHover ? -rotate : 0)}deg)`,
+            ...HS.display, fontSize: 32, lineHeight: 1, textTransform: 'lowercase',
             color: isActive ? HC.ink : fg,
             textDecoration: 'none',
-            padding: isActive ? '6px 10px' : '6px 4px',
+            padding: isActive ? '8px 16px' : '6px 8px',
             background: isActive ? accents[i] : 'transparent',
             border: isActive ? `2px solid ${HC.ink}` : 'none',
-            boxShadow: isActive ? `3px 3px 0 ${HC.ink}` : 'none',
-            transition: 'transform .2s',
+            boxShadow: isActive ? `4px 4px 0 ${HC.ink}` : 'none',
+            transition: 'transform .25s cubic-bezier(.34,1.56,.64,1)',
           }}>
             {l.l}
             {!isActive && (
-              <svg style={{ position: 'absolute', bottom: -6, left: 0, width: '100%' }} height="6" viewBox="0 0 60 6" preserveAspectRatio="none">
-                <path d="M0 3 Q 15 0, 30 3 T 60 3" fill="none" stroke={accents[i]} strokeWidth="2" strokeLinecap="round" />
+              <svg style={{
+                position: 'absolute', bottom: -8, left: 0, width: '100%',
+                transform: isHover ? 'scaleX(1.05)' : 'scaleX(1)',
+                transformOrigin: 'left',
+                transition: 'transform .25s',
+              }} height="8" viewBox="0 0 60 8" preserveAspectRatio="none">
+                <path d="M0 4 Q 15 0, 30 4 T 60 4" fill="none" stroke={accents[i]} strokeWidth={isHover ? 3 : 2.4} strokeLinecap="round" />
               </svg>
             )}
           </a>
@@ -165,18 +183,26 @@ function ProtoMobileNav({ active, tone = 'light' }) {
       <header style={{
         position: 'sticky', top: 0, zIndex: 30,
         background: dark ? HC.blueDark : HC.cream, color: dark ? HC.cream : HC.ink,
-        padding: '12px 16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-        borderBottom: `1px solid ${dark ? 'rgba(245,236,217,0.15)' : 'rgba(14,26,47,0.12)'}`,
+        padding: '14px 16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+        borderBottom: `2px solid ${dark ? 'rgba(245,236,217,0.18)' : HC.ink}`,
       }}>
         <a data-inter onClick={(e) => { e.preventDefault(); r.navigate('home'); }} href="#" style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none', color: 'inherit' }}>
-          <HWMark size={32} ring={dark ? HC.cream : HC.ink} />
-          <div style={{ ...HS.display, fontSize: 22, lineHeight: 1 }}>headwaters</div>
+          <img src={dark ? 'mopborf7-Icon-White.png' : 'mopborf6-Icon-Blue.png'}
+               alt="" style={{ height: 44, width: 'auto', display: 'block' }} />
+          <img src={dark ? 'mopborf3-Horizontal-White.png' : 'mopborf1-Horizontal-Blue.png'}
+               alt="Headwaters" style={{ height: 32, width: 'auto', display: 'block' }} />
         </a>
         <button data-inter onClick={() => setOpen(true)} style={{
           background: HC.lime, color: HC.ink, border: `2px solid ${HC.ink}`,
-          padding: '8px 14px', borderRadius: 999, ...HS.mono, fontSize: 10, cursor: 'pointer',
-        }}>
-          MENU ✦
+          padding: '12px 22px', borderRadius: 999, ...HS.display, fontSize: 22,
+          letterSpacing: '0.02em', cursor: 'pointer',
+          boxShadow: `3px 3px 0 ${HC.ink}`,
+          transition: 'transform .15s, box-shadow .15s',
+        }}
+          onTouchStart={(e) => { e.currentTarget.style.transform = 'translate(2px,2px)'; e.currentTarget.style.boxShadow = `1px 1px 0 ${HC.ink}`; }}
+          onTouchEnd={(e) => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = `3px 3px 0 ${HC.ink}`; }}
+        >
+          menu ✦
         </button>
       </header>
       {open && (
@@ -192,34 +218,36 @@ function ProtoMobileNav({ active, tone = 'light' }) {
             animation: 'h-slide-down .3s ease-out',
           }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
-              <div style={{ ...HS.display, fontSize: 28 }}>menu</div>
+              <div style={{ ...HS.display, fontSize: 44, lineHeight: 0.9, letterSpacing: '-0.01em' }}>menu</div>
               <button data-inter onClick={() => setOpen(false)} style={{
                 background: HC.ink, color: HC.cream, border: 'none', borderRadius: '50%',
-                width: 36, height: 36, ...HS.alt, fontSize: 16, cursor: 'pointer',
+                width: 44, height: 44, ...HS.alt, fontSize: 20, cursor: 'pointer',
               }}>✕</button>
             </div>
-            <div style={{ display: 'grid', gap: 12 }}>
+            <div style={{ display: 'grid', gap: 14 }}>
               {links.map((l, i) => {
                 const c = [HC.magenta, HC.lime, HC.tangerine][i];
                 const isActive = l.k === active;
                 return (
                   <a data-inter key={l.k} href="#" onClick={(e) => { e.preventDefault(); r.navigate(l.k); setOpen(false); }} style={{
                     display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                    padding: '20px 24px', background: isActive ? c : HC.paper,
+                    padding: '24px 28px', background: isActive ? c : HC.paper,
                     border: `2px solid ${HC.ink}`, borderRadius: 18,
                     textDecoration: 'none', color: HC.ink,
-                    boxShadow: isActive ? `4px 4px 0 ${HC.ink}` : 'none',
-                    ...HS.alt, fontSize: 24,
+                    boxShadow: isActive ? `5px 5px 0 ${HC.ink}` : `2px 2px 0 ${HC.ink}`,
+                    ...HS.display, fontSize: 38, lineHeight: 1, letterSpacing: '-0.005em',
+                    animation: `h-menu-in .3s ${i * 0.06}s both cubic-bezier(.34,1.56,.64,1)`,
                   }}>
                     <span>{l.l}</span>
-                    <span style={{ ...HS.display, fontSize: 28, color: HC.blue }}>{l.i}</span>
+                    <span style={{ ...HS.display, fontSize: 36, color: HC.blue }}>{l.i}</span>
                   </a>
                 );
               })}
             </div>
-            <div style={{ marginTop: 20, padding: '14px 18px', background: HC.lime, border: `2px solid ${HC.ink}`, borderRadius: 14, ...HS.mono, fontSize: 11, textAlign: 'center' }}>
-              ✦ OPEN TODAY · 9 to 8
+            <div style={{ marginTop: 22, padding: '16px 20px', background: HC.lime, border: `2px solid ${HC.ink}`, borderRadius: 14, ...HS.display, fontSize: 22, textAlign: 'center', letterSpacing: '0.01em' }}>
+              ✦ open today · 9 to 8
             </div>
+            <style>{`@keyframes h-menu-in { from { opacity: 0; transform: translateX(-12px) } to { opacity: 1; transform: none } }`}</style>
           </div>
         </div>
       )}

@@ -193,6 +193,51 @@ export function Halftone({ color = HC.ink, opacity = 0.18, dot = 3, gap = 8 }) {
   );
 }
 
+export function ProductPattern({ color, opacity = 0.16, blend = 'screen', strokeWidth = 1.6 }) {
+  const c = color || HC.cream;
+  const stroke = encodeURIComponent(c);
+  const svg = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200' width='200' height='200'><g fill='none' stroke='${stroke}' stroke-width='${strokeWidth}' stroke-linejoin='round' stroke-linecap='round'><g transform='translate(18 22) rotate(-12)'><rect x='0' y='10' width='22' height='34' rx='2'/><rect x='2' y='4' width='18' height='8' rx='1'/><line x1='11' y1='0' x2='11' y2='4'/></g><g transform='translate(140 16) rotate(8)'><rect x='0' y='0' width='40' height='26' rx='2'/><line x1='0' y1='8' x2='40' y2='8'/></g><g transform='translate(86 70)'><rect x='0' y='8' width='28' height='34' rx='2'/><rect x='2' y='4' width='24' height='6' rx='1'/><line x1='6' y1='20' x2='22' y2='20'/></g><g transform='translate(14 130) rotate(-6)'><circle cx='12' cy='10' r='10'/><path d='M 22 12 L 56 16 L 60 22 L 56 22 L 22 18 Z'/></g><g transform='translate(120 150) rotate(22)'><rect x='0' y='4' width='52' height='6' rx='1'/><rect x='52' y='3' width='6' height='8' rx='1' fill='${stroke}' fill-opacity='0.35'/><path d='M 60 4 q 4 -4 2 -8 M 64 6 q 6 -2 4 -8 M 60 10 q 6 4 4 10'/></g><g transform='translate(60 160)' stroke-width='${strokeWidth * 0.9}'><circle cx='0' cy='0' r='3'/><line x1='-7' y1='0' x2='-12' y2='0'/><line x1='7' y1='0' x2='12' y2='0'/><line x1='0' y1='-7' x2='0' y2='-12'/><line x1='0' y1='7' x2='0' y2='12'/></g><g transform='translate(180 96)' stroke-width='${strokeWidth * 0.9}'><circle cx='0' cy='0' r='3'/><line x1='-7' y1='0' x2='-12' y2='0'/><line x1='7' y1='0' x2='12' y2='0'/><line x1='0' y1='-7' x2='0' y2='-12'/><line x1='0' y1='7' x2='0' y2='12'/></g></g></svg>`;
+  const url = `data:image/svg+xml;utf8,${svg.replace(/#/g, '%23')}`;
+  return (
+    <div aria-hidden style={{
+      position: 'absolute', inset: 0, pointerEvents: 'none',
+      backgroundImage: `url("${url}")`,
+      backgroundSize: '200px 200px',
+      opacity, mixBlendMode: blend,
+    }} />
+  );
+}
+
+const SUNNY_POSES = {
+  peace:    '/assets/mopbq0av-Sunny_peace.png',
+  woo:      '/assets/mopbq0bq-Sunny_Woo.png',
+  walk:     '/assets/mopbq0bk-Sunny_Walk.png',
+  jump:     '/assets/mopbq0ae-Sunny_jump.png',
+  smoking:  '/assets/mopbq0b8-Sunny_Smoking.PNG',
+  thumbsup: '/assets/mopbq0be-Sunny_Thumbs_Up.png',
+  holding:  '/assets/mopbq0a5-Sunny_Holding_Sign.png',
+  love:     '/assets/mopbq0al-Sunny_love.png',
+  hat:      '/assets/mopbq09z-Sunny_hat.png',
+  rain:     '/assets/mopbq0b0-Sunny_Rain.png',
+  face:     '/assets/mopbq09v-Headwaters_Face.png',
+  nobg:     '/assets/mopbq0aq-Sunny_no_background.png',
+};
+
+export function Sunny({ pose = 'peace', size = 120, rotate = 0, animate, style, className, alt = '', ...rest }) {
+  const src = SUNNY_POSES[pose] || SUNNY_POSES.peace;
+  return (
+    <img src={src} alt={alt}
+      style={{
+        width: size, height: 'auto', display: 'block',
+        transform: `rotate(${rotate}deg)`,
+        filter: `drop-shadow(3px 4px 0 rgba(0,0,0,0.22))`,
+        animation: animate || undefined,
+        ...style,
+      }}
+      className={className} {...rest} />
+  );
+}
+
 export function Grain({ opacity = 0.1 }) {
   return (
     <div style={{
@@ -265,40 +310,54 @@ export function StampButton({ label = 'CLICK · ME · ', center = '✦', color =
 
 export function TicketButton({ children, color = HC.lime, fg = HC.ink, size = 'lg', icon = '→' }) {
   const sizes = {
-    sm: { padW: 16, padH: 10, fs: 12 },
-    md: { padW: 22, padH: 14, fs: 14 },
-    lg: { padW: 30, padH: 18, fs: 16 },
+    sm: { padW: 18, padH: 12, fs: 22 },
+    md: { padW: 24, padH: 14, fs: 28 },
+    lg: { padW: 30, padH: 18, fs: 34 },
   }[size];
   return (
-    <button style={{
+    <button data-ticket style={{
       position: 'relative', display: 'inline-flex', alignItems: 'center', gap: 12,
       padding: `${sizes.padH}px ${sizes.padW + 12}px ${sizes.padH}px ${sizes.padW + 18}px`,
-      background: color, color: fg, ...HS.alt, fontSize: sizes.fs,
+      background: color, color: fg,
+      ...HS.display, fontSize: sizes.fs, lineHeight: 1, letterSpacing: '-0.01em', textTransform: 'lowercase',
       border: `2px solid ${HC.ink}`, cursor: 'pointer',
       clipPath: 'polygon(8px 0, calc(100% - 14px) 0, 100% 50%, calc(100% - 14px) 100%, 8px 100%, 0 50%)',
       filter: `drop-shadow(4px 4px 0 ${HC.ink})`,
-    }}>
+      transition: 'transform .18s cubic-bezier(.34,1.56,.64,1), filter .18s',
+    }}
+      onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.filter = `drop-shadow(6px 7px 0 ${HC.ink})`; }}
+      onMouseLeave={(e) => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.filter = `drop-shadow(4px 4px 0 ${HC.ink})`; }}
+      onMouseDown={(e) => { e.currentTarget.style.transform = 'translateY(2px)'; e.currentTarget.style.filter = `drop-shadow(2px 2px 0 ${HC.ink})`; }}
+      onMouseUp={(e) => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.filter = `drop-shadow(6px 7px 0 ${HC.ink})`; }}
+    >
       <span style={{ display: 'inline-block', width: 6, height: 6, borderRadius: '50%', background: HC.ink }} />
       <span>{children}</span>
-      <span style={{ ...HS.display, fontSize: sizes.fs * 1.4 }}>{icon}</span>
+      <span style={{ ...HS.display, fontSize: sizes.fs * 1.05 }}>{icon}</span>
     </button>
   );
 }
 
 export function BlobButton({ children, color = HC.magenta, fg = HC.ink, rotate = -2 }) {
   return (
-    <button style={{
+    <button data-confetti style={{
       position: 'relative', display: 'inline-flex', alignItems: 'center', gap: 10,
-      padding: '20px 36px', background: 'transparent', border: 'none', cursor: 'pointer',
+      padding: '24px 40px', background: 'transparent', border: 'none', cursor: 'pointer',
       transform: `rotate(${rotate}deg)`,
-    }}>
+      transition: 'transform .25s cubic-bezier(.34,1.56,.64,1)',
+    }}
+      onMouseEnter={(e) => e.currentTarget.style.transform = `rotate(${rotate + 1}deg) translateY(-3px) scale(1.04)`}
+      onMouseLeave={(e) => e.currentTarget.style.transform = `rotate(${rotate}deg)`}
+    >
       <svg viewBox="0 0 200 80" preserveAspectRatio="none" style={{
         position: 'absolute', inset: 0, width: '100%', height: '100%', zIndex: 0,
       }}>
         <path d="M 14 8 C 60 -2 130 4 188 10 C 198 30 196 60 184 72 C 130 78 70 76 12 70 C 2 50 4 22 14 8 Z"
           fill={color} stroke={HC.ink} strokeWidth="2" />
       </svg>
-      <span style={{ position: 'relative', zIndex: 1, color: fg, ...HS.alt, fontSize: 16 }}>
+      <span style={{
+        position: 'relative', zIndex: 1, color: fg,
+        ...HS.display, fontSize: 30, lineHeight: 1, letterSpacing: '-0.005em', textTransform: 'lowercase',
+      }}>
         {children}
       </span>
     </button>

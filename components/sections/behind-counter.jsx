@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { HC, HS } from '../design/tokens';
-import { Halftone } from '../design/base';
+import { Halftone, Sunny } from '../design/base';
 import { GLYPHS, NumGlyph } from '../design/glyphs';
 import { FolioRule, Reveal, PriceStamp } from '../design/interactions';
 
@@ -21,6 +21,15 @@ export function BehindCounter({ mobile = false }) {
       <div style={{ position: 'absolute', top: 60, right: -40, opacity: 0.15, pointerEvents: 'none' }}>
         <NumGlyph n="11" size={300} color={HC.amber} />
       </div>
+      {!mobile && (
+        <Sunny pose="smoking" size={130} rotate={-6}
+          style={{
+            position: 'absolute', left: 30, top: 80, zIndex: 1, opacity: 0.95,
+            filter: 'drop-shadow(3px 4px 0 rgba(0,0,0,0.3))',
+            pointerEvents: 'none',
+            animation: 'h-bob-rot 5.2s ease-in-out infinite',
+          }} />
+      )}
       <div style={{ position: 'relative', maxWidth: 1280, margin: '0 auto' }}>
         <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', flexWrap: 'wrap', gap: 24, marginBottom: 56 }}>
           <div>

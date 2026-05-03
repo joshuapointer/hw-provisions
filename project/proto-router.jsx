@@ -4,6 +4,10 @@
 
 const HRouterCtx = React.createContext(null);
 
+/* Routes are ordered so we can pick a slide direction (next index > current = forward).
+   When direction is "forward" the new page slides in from the right; "back" from the left. */
+const ROUTE_ORDER = ['home', 'showcase', 'visit'];
+
 function HRouter({ initial = 'home', storageKey, children }) {
   const [route, setRoute] = React.useState(() => {
     if (storageKey && typeof localStorage !== 'undefined') {
@@ -17,10 +21,18 @@ function HRouter({ initial = 'home', storageKey, children }) {
     }
   }, [route, storageKey]);
   const [transitioning, setTransitioning] = React.useState(false);
+  const [direction, setDirection] = React.useState('forward');
+  const [wipeColor, setWipeColor] = React.useState(null);
   const [scrollMap] = React.useState(() => new Map());
 
   const navigate = React.useCallback((next, scrollEl) => {
     if (next === route) return;
+    const fromIdx = ROUTE_ORDER.indexOf(route);
+    const toIdx   = ROUTE_ORDER.indexOf(next);
+    setDirection(toIdx >= fromIdx ? 'forward' : 'back');
+    /* Each route gets its own wipe color — recognizable signature per page */
+    const colors = { home: '#387CCC', showcase: '#E6A933', visit: '#C44A6A' };
+    setWipeColor(colors[next] || '#387CCC');
     setTransitioning(true);
     setTimeout(() => {
       if (scrollEl) scrollMap.set(route, scrollEl.scrollTop);
@@ -28,13 +40,41 @@ function HRouter({ initial = 'home', storageKey, children }) {
       setTimeout(() => {
         setTransitioning(false);
         if (scrollEl) scrollEl.scrollTop = 0;
+        setTimeout(() => setWipeColor(null), 480);
       }, 30);
-    }, 220);
+    }, 360);
   }, [route, scrollMap]);
 
   return (
-    <HRouterCtx.Provider value={{ route, navigate, transitioning }}>
+    <HRouterCtx.Provider value={{ route, navigate, transitioning, direction, wipeColor }}>
       {children}
+      {/* Curtain wipe overlay — sweeps across the artboard during route changes */}
+      {wipeColor && (
+        <div aria-hidden style={{
+          position: 'absolute', inset: 0, zIndex: 9995, pointerEvents: 'none',
+          overflow: 'hidden',
+        }}>
+          <div style={{
+            position: 'absolute', inset: 0,
+            background: `linear-gradient(${direction === 'forward' ? '90deg' : '270deg'},
+              ${wipeColor} 0%, ${wipeColor} 48%, rgba(0,0,0,0) 50%)`,
+            backgroundSize: '220% 100%',
+            animation: `h-wipe-${direction} .76s cubic-bezier(.86,0,.07,1) forwards`,
+          }} />
+        </div>
+      )}
+      <style>{`
+        @keyframes h-wipe-forward {
+          0%   { background-position: 100% 0; }
+          50%  { background-position: 50% 0; }
+          100% { background-position: -100% 0; }
+        }
+        @keyframes h-wipe-back {
+          0%   { background-position: -100% 0; }
+          50%  { background-position: 50% 0; }
+          100% { background-position: 100% 0; }
+        }
+      `}</style>
     </HRouterCtx.Provider>
   );
 }

@@ -3,13 +3,12 @@ import { useRef, useState } from 'react';
 import Link from 'next/link';
 import { useMobile } from '../hooks/useMobile';
 import { HC, HS } from '../components/design/tokens';
-import { Rings, Burst, Squiggle, Halftone, Mushroom, Eye, Smoke, SunRise, Lightning, Sticker, Glyph, TicketButton, BlobButton } from '../components/design/base';
-import { FolioRule, DropCap, Reveal, spawnGlyphConfetti } from '../components/design/interactions';
+import { Rings, Burst, Squiggle, Halftone, Mushroom, Eye, Smoke, SunRise, Lightning, Sticker, Glyph, TicketButton, BlobButton, ProductPattern, Sunny } from '../components/design/base';
+import { FolioRule, DropCap, spawnGlyphConfetti } from '../components/design/interactions';
 import { Nav, MobileNav } from '../components/nav';
 import { Footer } from '../components/footer';
 import { Marquee } from '../components/marquee';
 import { Events } from '../components/sections/events';
-import { SocialFeed } from '../components/sections/social-feed';
 import { Roster } from '../components/sections/roster';
 import { BehindCounter } from '../components/sections/behind-counter';
 import { StickerSheet } from '../components/sections/sticker-sheet';
@@ -81,30 +80,34 @@ export default function Home() {
               textShadow: mobile ? `4px 4px 0 ${HC.ink}` : `8px 8px 0 ${HC.ink}`,
               letterSpacing: '-0.03em',
             }}>
-              <span style={{ display: 'block' }}>where's your</span>
+              <span style={{ display: 'block' }}>
+                <span className="h-word h-word-1">where&apos;s</span>{' '}
+                <span className="h-word h-word-2">your</span>
+              </span>
               <span style={{
                 display: 'block', fontStyle: 'italic',
                 color: HC.amber, textShadow: 'none',
                 WebkitTextStroke: `${mobile ? 2 : 3}px ${HC.ink}`, paintOrder: 'stroke fill',
                 marginLeft: mobile ? 12 : 40,
-              }}>head at?</span>
+              }}>
+                <span className="h-word h-word-3">head at?</span>
+              </span>
             </h1>
             <Squiggle width={mobile ? 220 : 520} color={HC.amber} />
             <p style={{
-              marginTop: 16, fontSize: mobile ? 15 : 22, maxWidth: 540, lineHeight: 1.4,
+              marginTop: 16, fontSize: mobile ? 17 : 26, maxWidth: 540, lineHeight: 1.35,
               ...HS.serif, fontStyle: 'italic', fontWeight: 400, color: 'rgba(245,236,217,0.95)',
             }}>
-              small shop, floor-curated.<br />
-              cannabis accessories, apparel, and the kind of gifts that fly under your mom's radar.<br />
-              <span style={{ ...HS.hand, fontStyle: 'normal', fontSize: mobile ? 22 : 30, color: HC.amber, display: 'inline-block', marginTop: 6 }}>
+              floor-curated gear. one-of-one drops.<br />
+              <span style={{ ...HS.hand, fontStyle: 'normal', fontSize: mobile ? 28 : 38, color: HC.amber, display: 'inline-block', marginTop: 8, lineHeight: 1 }}>
                 tucked into the source · rogers ar.
               </span>
             </p>
             <div style={{ display: 'flex', gap: mobile ? 10 : 18, marginTop: mobile ? 24 : 36, alignItems: 'center', flexWrap: 'wrap' }}>
-              <Link href="/showcase" style={{ textDecoration: 'none' }} onClick={(e) => spawnGlyphConfetti(e.clientX, e.clientY)}>
+              <Link href="/showcase" data-confetti style={{ textDecoration: 'none' }} onClick={(e) => spawnGlyphConfetti(e.clientX, e.clientY)}>
                 <TicketButton color={HC.lime} fg={HC.ink} icon="→" size={mobile ? 'sm' : 'lg'}>see what we stock</TicketButton>
               </Link>
-              <Link href="/visit" style={{ textDecoration: 'none' }} onClick={(e) => spawnGlyphConfetti(e.clientX, e.clientY)}>
+              <Link href="/visit" data-confetti style={{ textDecoration: 'none' }} onClick={(e) => spawnGlyphConfetti(e.clientX, e.clientY)}>
                 <BlobButton color={HC.cream} fg={HC.ink} rotate={2}>plan a visit</BlobButton>
               </Link>
             </div>
@@ -118,11 +121,19 @@ export default function Home() {
                     background: 'url(/assets/photo-3.avif) center/cover',
                     border: `1px solid ${HC.ink}`,
                   }} />
-                  <div style={{ ...HS.hand, fontSize: 26, color: HC.ink, textAlign: 'center', marginTop: 8, lineHeight: 1 }}>
+                  <div style={{ ...HS.hand, fontSize: 30, color: HC.ink, textAlign: 'center', marginTop: 8, lineHeight: 1 }}>
                     one of one ✦
                   </div>
                 </Sticker>
               </div>
+              {/* Sunny peace */}
+              <Sunny pose="peace" size={200} rotate={-4}
+                style={{
+                  position: 'absolute', right: -90, top: 220, zIndex: 3,
+                  filter: 'drop-shadow(4px 6px 0 rgba(0,0,0,0.28)) drop-shadow(0 14px 22px rgba(0,0,0,0.24))',
+                  pointerEvents: 'none',
+                  animation: 'h-bob-rot 4.2s ease-in-out infinite',
+                }} />
               <div style={{ position: 'absolute', top: -16, left: -28, zIndex: 2 }}>
                 <Sticker color={HC.rose} rotate={-8} padding={10} shadow={false} peel={false}>
                   <div style={{ ...HS.alt, fontSize: 14, color: HC.cream }}>HEADY<br />DROPS</div>
@@ -140,9 +151,16 @@ export default function Home() {
       <Marquee bg={HC.ink} fg={HC.amber} />
 
       {/* INTRO */}
-      <section style={{ padding: mobile ? '40px 16px' : '80px 40px', background: HC.cream, position: 'relative' }}>
+      <section style={{ padding: mobile ? '40px 16px' : '80px 40px', background: HC.cream, position: 'relative', overflow: 'hidden' }}>
         <Halftone color={HC.ink} opacity={0.06} dot={2} gap={11} />
-        <div style={{ display: mobile ? 'block' : 'grid', gridTemplateColumns: '1fr 1.4fr', gap: 64, alignItems: 'center' }}>
+        <ProductPattern color={HC.blue} opacity={0.08} blend="multiply" />
+        <img src="/assets/mopbp8c2-Headwaters_Banner.png" alt="" aria-hidden
+          style={{
+            position: 'absolute', left: '-5%', bottom: -40, width: '50%',
+            opacity: 0.18, mixBlendMode: 'multiply', pointerEvents: 'none',
+            filter: 'saturate(0.6)',
+          }} />
+        <div style={{ position: 'relative', display: mobile ? 'block' : 'grid', gridTemplateColumns: '1fr 1.4fr', gap: 64, alignItems: 'center' }}>
           {!mobile && (
             <div style={{ position: 'relative' }}>
               <div style={{ position: 'relative', width: 380, height: 380, transform: 'rotate(-3deg)', filter: `drop-shadow(6px 6px 0 ${HC.ink})` }}>
@@ -150,6 +168,14 @@ export default function Home() {
                   <SunRise size={380} sun={HC.amber} mountain={HC.blueDeep} sky={HC.cream} />
                 </div>
               </div>
+              {/* Sunny thumbsup endorsing the gear */}
+              <Sunny pose="thumbsup" size={140} rotate={6}
+                style={{
+                  position: 'absolute', right: -50, top: 80, zIndex: 3,
+                  filter: 'drop-shadow(4px 5px 0 rgba(0,0,0,0.25)) drop-shadow(0 10px 14px rgba(0,0,0,0.18))',
+                  pointerEvents: 'none',
+                  animation: 'h-bob-rot 4.6s ease-in-out infinite',
+                }} />
               <div style={{
                 position: 'absolute', top: 24, left: -28,
                 ...HS.hand, fontSize: 60, color: HC.rose,
@@ -171,13 +197,13 @@ export default function Home() {
             </h2>
             <div style={{ marginTop: 28, maxWidth: 560 }}>
               <DropCap glyphN="03" color={HC.amber}>
-                <span style={{ ...HS.serif, fontSize: mobile ? 17 : 21, lineHeight: 1.5, fontStyle: 'italic' }}>
-                  headwaters provisions sits just inside the front doors of the source — rogers, arkansas. cannabis accessories, apparel, and the kind of gifts you can't find online. (because we're not online. on purpose.)
+                <span style={{ ...HS.serif, fontSize: mobile ? 19 : 24, lineHeight: 1.45, fontStyle: 'italic' }}>
+                  the floor is the catalog. cannabis accessories, apparel, gifts you can&apos;t find online — because we&apos;re not online. on purpose.
                 </span>
               </DropCap>
             </div>
             <p style={{ ...HS.hand, fontSize: mobile ? 24 : 32, color: HC.rose, marginTop: 18, lineHeight: 1, transform: 'rotate(-1.5deg)', display: 'inline-block' }}>
-              we keep what we'd keep ourselves.
+              we keep what we&apos;d keep ourselves.
             </p>
           </div>
         </div>
@@ -200,13 +226,13 @@ export default function Home() {
             <h2 style={{ ...HS.display, fontSize: mobile ? 64 : 132, lineHeight: 0.84, margin: '14px 0 0', color: HC.cream, letterSpacing: '-0.025em' }}>
               one of <span style={{ color: HC.amber, fontStyle: 'italic', WebkitTextStroke: `2px ${HC.ink}`, paintOrder: 'stroke fill' }}>one</span>.
             </h2>
-            <p style={{ marginTop: 18, ...HS.serif, fontStyle: 'italic', fontSize: mobile ? 16 : 21, lineHeight: 1.45, maxWidth: 480, color: 'rgba(242,230,201,0.92)' }}>
+            <p style={{ marginTop: 18, ...HS.serif, fontStyle: 'italic', fontSize: mobile ? 18 : 24, lineHeight: 1.4, maxWidth: 480, color: 'rgba(242,230,201,0.92)' }}>
               local glassblowers drop pieces every friday at five.<br />
-              we keep one. when it's gone — that's the whole story.
+              we keep one. when it&apos;s gone — that&apos;s the whole story.
             </p>
             <div style={{ marginTop: 28, display: 'flex', alignItems: 'center', gap: 18, flexWrap: 'wrap' }}>
-              <Link href="/visit" style={{ textDecoration: 'none' }} onClick={(e) => spawnGlyphConfetti(e.clientX, e.clientY)}>
-                <TicketButton color={HC.amber} fg={HC.ink} icon="→" size={mobile ? 'sm' : 'lg'}>this friday's piece</TicketButton>
+              <Link href="/visit" data-confetti style={{ textDecoration: 'none' }} onClick={(e) => spawnGlyphConfetti(e.clientX, e.clientY)}>
+                <TicketButton color={HC.amber} fg={HC.ink} icon="→" size={mobile ? 'sm' : 'lg'}>this friday&apos;s piece</TicketButton>
               </Link>
               <span style={{ ...HS.hand, fontSize: mobile ? 22 : 28, color: HC.rose, transform: 'rotate(-3deg)', display: 'inline-block' }}>
                 ← come find us
@@ -231,6 +257,14 @@ export default function Home() {
               <div style={{ position: 'absolute', top: -22, right: -28, transform: 'rotate(12deg)', filter: `drop-shadow(3px 3px 0 ${HC.ink})` }}>
                 <Mushroom size={90} cap={HC.amber} stem={HC.cream} dots={HC.cream} />
               </div>
+              {/* Sunny woo, scaled */}
+              <Sunny pose="woo" size={130} rotate={-8}
+                style={{
+                  position: 'absolute', left: -120, bottom: -40, zIndex: 3,
+                  filter: 'drop-shadow(4px 6px 0 rgba(0,0,0,0.28)) drop-shadow(0 14px 22px rgba(0,0,0,0.24))',
+                  pointerEvents: 'none',
+                  animation: 'h-bob-rot 4s ease-in-out infinite',
+                }} />
             </div>
           )}
           {mobile && (

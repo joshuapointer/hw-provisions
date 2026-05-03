@@ -1,5 +1,7 @@
 import './globals.css';
 import { ToastProvider } from '../components/toast';
+import { PageTransition } from '../components/page-transition';
+import { SunnyCursor, ClickSpawner } from '../components/sunny-cursor';
 
 export const metadata = {
   title: 'Headwaters Provisions',
@@ -20,7 +22,11 @@ export default function RootLayout({ children }) {
       </head>
       <body>
         <ToastProvider>
-          {children}
+          <PageTransition>
+            {children}
+          </PageTransition>
+          <SunnyCursor />
+          <ClickSpawner />
         </ToastProvider>
       </body>
     </html>
