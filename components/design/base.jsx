@@ -1,5 +1,5 @@
 'use client';
-import { useId } from 'react';
+import { useId, useMemo } from 'react';
 import { HC, HS } from './tokens';
 
 export function Rings({ size = 200, color = HC.blue, opacity = 1 }) {
@@ -195,9 +195,11 @@ export function Halftone({ color = HC.ink, opacity = 0.18, dot = 3, gap = 8 }) {
 
 export function ProductPattern({ color, opacity = 0.16, blend = 'screen', strokeWidth = 1.6 }) {
   const c = color || HC.cream;
-  const stroke = encodeURIComponent(c);
-  const svg = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200' width='200' height='200'><g fill='none' stroke='${stroke}' stroke-width='${strokeWidth}' stroke-linejoin='round' stroke-linecap='round'><g transform='translate(18 22) rotate(-12)'><rect x='0' y='10' width='22' height='34' rx='2'/><rect x='2' y='4' width='18' height='8' rx='1'/><line x1='11' y1='0' x2='11' y2='4'/></g><g transform='translate(140 16) rotate(8)'><rect x='0' y='0' width='40' height='26' rx='2'/><line x1='0' y1='8' x2='40' y2='8'/></g><g transform='translate(86 70)'><rect x='0' y='8' width='28' height='34' rx='2'/><rect x='2' y='4' width='24' height='6' rx='1'/><line x1='6' y1='20' x2='22' y2='20'/></g><g transform='translate(14 130) rotate(-6)'><circle cx='12' cy='10' r='10'/><path d='M 22 12 L 56 16 L 60 22 L 56 22 L 22 18 Z'/></g><g transform='translate(120 150) rotate(22)'><rect x='0' y='4' width='52' height='6' rx='1'/><rect x='52' y='3' width='6' height='8' rx='1' fill='${stroke}' fill-opacity='0.35'/><path d='M 60 4 q 4 -4 2 -8 M 64 6 q 6 -2 4 -8 M 60 10 q 6 4 4 10'/></g><g transform='translate(60 160)' stroke-width='${strokeWidth * 0.9}'><circle cx='0' cy='0' r='3'/><line x1='-7' y1='0' x2='-12' y2='0'/><line x1='7' y1='0' x2='12' y2='0'/><line x1='0' y1='-7' x2='0' y2='-12'/><line x1='0' y1='7' x2='0' y2='12'/></g><g transform='translate(180 96)' stroke-width='${strokeWidth * 0.9}'><circle cx='0' cy='0' r='3'/><line x1='-7' y1='0' x2='-12' y2='0'/><line x1='7' y1='0' x2='12' y2='0'/><line x1='0' y1='-7' x2='0' y2='-12'/><line x1='0' y1='7' x2='0' y2='12'/></g></g></svg>`;
-  const url = `data:image/svg+xml;utf8,${svg.replace(/#/g, '%23')}`;
+  const url = useMemo(() => {
+    const stroke = encodeURIComponent(c);
+    const svg = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200' width='200' height='200'><g fill='none' stroke='${stroke}' stroke-width='${strokeWidth}' stroke-linejoin='round' stroke-linecap='round'><g transform='translate(18 22) rotate(-12)'><rect x='0' y='10' width='22' height='34' rx='2'/><rect x='2' y='4' width='18' height='8' rx='1'/><line x1='11' y1='0' x2='11' y2='4'/></g><g transform='translate(140 16) rotate(8)'><rect x='0' y='0' width='40' height='26' rx='2'/><line x1='0' y1='8' x2='40' y2='8'/></g><g transform='translate(86 70)'><rect x='0' y='8' width='28' height='34' rx='2'/><rect x='2' y='4' width='24' height='6' rx='1'/><line x1='6' y1='20' x2='22' y2='20'/></g><g transform='translate(14 130) rotate(-6)'><circle cx='12' cy='10' r='10'/><path d='M 22 12 L 56 16 L 60 22 L 56 22 L 22 18 Z'/></g><g transform='translate(120 150) rotate(22)'><rect x='0' y='4' width='52' height='6' rx='1'/><rect x='52' y='3' width='6' height='8' rx='1' fill='${stroke}' fill-opacity='0.35'/><path d='M 60 4 q 4 -4 2 -8 M 64 6 q 6 -2 4 -8 M 60 10 q 6 4 4 10'/></g><g transform='translate(60 160)' stroke-width='${strokeWidth * 0.9}'><circle cx='0' cy='0' r='3'/><line x1='-7' y1='0' x2='-12' y2='0'/><line x1='7' y1='0' x2='12' y2='0'/><line x1='0' y1='-7' x2='0' y2='-12'/><line x1='0' y1='7' x2='0' y2='12'/></g><g transform='translate(180 96)' stroke-width='${strokeWidth * 0.9}'><circle cx='0' cy='0' r='3'/><line x1='-7' y1='0' x2='-12' y2='0'/><line x1='7' y1='0' x2='12' y2='0'/><line x1='0' y1='-7' x2='0' y2='-12'/><line x1='0' y1='7' x2='0' y2='12'/></g></g></svg>`;
+    return `data:image/svg+xml;utf8,${svg.replace(/#/g, '%23')}`;
+  }, [c, strokeWidth]);
   return (
     <div aria-hidden style={{
       position: 'absolute', inset: 0, pointerEvents: 'none',
@@ -208,7 +210,7 @@ export function ProductPattern({ color, opacity = 0.16, blend = 'screen', stroke
   );
 }
 
-const SUNNY_POSES = {
+export const SUNNY_POSES = {
   peace:    '/assets/mopbq0av-Sunny_peace.png',
   woo:      '/assets/mopbq0bq-Sunny_Woo.png',
   walk:     '/assets/mopbq0bk-Sunny_Walk.png',

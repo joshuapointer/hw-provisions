@@ -70,7 +70,6 @@ export default function Visit() {
             <div style={{ position: 'absolute', top: 80, right: 80, transform: 'rotate(-8deg)', filter: `drop-shadow(4px 4px 0 ${HC.ink})` }}>
               <Mushroom size={140} cap={HC.rose} stem={HC.cream} dots={HC.cream} />
             </div>
-            {/* Sunny in the rain — outside, waving you in */}
             <Sunny pose="rain" size={180} rotate={-6}
               style={{
                 position: 'absolute', top: 200, right: 240, zIndex: 2,
@@ -228,7 +227,6 @@ export default function Visit() {
                 </form>
               ) : (
                 <div style={{ padding: 20, textAlign: 'center', position: 'relative' }}>
-                  {/* Sunny celebration */}
                   <Sunny pose="jump" size={160}
                     style={{
                       margin: '0 auto',

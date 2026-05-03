@@ -1,16 +1,8 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
+import { SUNNY_POSES } from './design/base';
 
-const POSE_PEACE    = '/assets/mopbq0av-Sunny_peace.png';
-const POSE_THUMBSUP = '/assets/mopbq0be-Sunny_Thumbs_Up.png';
-const POSE_JUMP     = '/assets/mopbq0ae-Sunny_jump.png';
-const BURST_POSES = [
-  '/assets/mopbq0av-Sunny_peace.png',
-  '/assets/mopbq0be-Sunny_Thumbs_Up.png',
-  '/assets/mopbq0ae-Sunny_jump.png',
-  '/assets/mopbq0bq-Sunny_Woo.png',
-  '/assets/mopbq09v-Headwaters_Face.png',
-];
+const BURST_POSES = ['peace', 'thumbsup', 'jump', 'woo', 'face'].map(k => SUNNY_POSES[k]);
 
 export function SunnyCursor() {
   const sunnyRef = useRef(null);
@@ -19,8 +11,8 @@ export function SunnyCursor() {
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
-    if (window.matchMedia && window.matchMedia('(max-width: 768px)').matches) return;
-    if (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) return;
+    if (window.matchMedia('(max-width: 768px)').matches) return;
+    if (window.matchMedia('(pointer: coarse)').matches) return;
 
     let raf, x = 0, y = 0, tx = 0, ty = 0;
     const tick = () => {
@@ -47,11 +39,7 @@ export function SunnyCursor() {
         setPose('peace');
       }
     };
-    const onDown = (e) => {
-      setPose('jump');
-      const burstTarget = e.target.closest('[data-confetti], [data-stamp], [data-ticket], .h-confetti-on-click, button, a');
-      if (burstTarget) spawnSunnyBurst(e.clientX, e.clientY);
-    };
+    const onDown = () => setPose('jump');
     const onUp = () => setPose('peace');
 
     window.addEventListener('mousemove', onMove);
@@ -70,9 +58,7 @@ export function SunnyCursor() {
     };
   }, []);
 
-  const src = pose === 'thumbsup' ? POSE_THUMBSUP
-            : pose === 'jump'     ? POSE_JUMP
-            : POSE_PEACE;
+  const src = SUNNY_POSES[pose] ?? SUNNY_POSES.peace;
 
   return (
     <img

@@ -18,7 +18,6 @@ export function Nav({ tone = 'light' }) {
   const fg = dark ? HC.cream : HC.ink;
   const bg = dark ? HC.blueDark : HC.cream;
 
-  // Scroll-velocity emblem spin
   useEffect(() => {
     if (!emblemRef.current) return;
     let last = 0, lastT = performance.now(), rot = 0, vel = 0, raf;

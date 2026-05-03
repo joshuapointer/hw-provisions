@@ -41,11 +41,11 @@ export default function Showcase() {
   const mobile = useMobile();
   const [filter, setFilter] = useState('all');
   const [hovered, setHovered] = useState(null);
-  const [walkKey, setWalkKey] = useState(0);
+  const [walkNonce, setWalkNonce] = useState(0);
   const [showWalker, setShowWalker] = useState(false);
 
   useEffect(() => {
-    setWalkKey(k => k + 1);
+    setWalkNonce(k => k + 1);
     setShowWalker(true);
     const t = setTimeout(() => setShowWalker(false), 2200);
     return () => clearTimeout(t);
@@ -70,7 +70,6 @@ export default function Showcase() {
             <div style={{ position: 'absolute', right: 320, bottom: 60, transform: 'rotate(-6deg)', filter: `drop-shadow(4px 4px 0 ${HC.ink})` }}>
               <Eye size={120} iris={HC.haze} lash={HC.ink} />
             </div>
-            {/* Sunny holding sign at the brand wall */}
             <Sunny pose="holding" size={260} rotate={4}
               style={{
                 position: 'absolute', right: 40, bottom: -20, zIndex: 2,
@@ -97,18 +96,10 @@ export default function Showcase() {
         </div>
       </section>
 
-      {/* WALKING SUNNY */}
       {showWalker && !mobile && (
-        <div key={walkKey} style={{
-          position: 'relative', height: 0, zIndex: 25, pointerEvents: 'none',
-        }}>
-          <img src="/assets/mopbq0bk-Sunny_Walk.png" alt="" aria-hidden
-            style={{
-              position: 'absolute', top: -100, left: '-15%',
-              height: 180, width: 'auto',
-              animation: 'h-walk 2.2s cubic-bezier(.4,.1,.6,.9) forwards, h-walk-bob 0.4s ease-in-out infinite',
-              filter: 'drop-shadow(3px 4px 0 rgba(0,0,0,0.25))',
-            }} />
+        <div key={walkNonce} style={{ position: 'relative', height: 0, zIndex: 25, pointerEvents: 'none' }}>
+          <Sunny pose="walk" animate="h-walk 2.2s cubic-bezier(.4,.1,.6,.9) forwards, h-walk-bob 0.4s ease-in-out infinite"
+            style={{ position: 'absolute', top: -100, left: '-15%', height: 180, width: 'auto' }} />
         </div>
       )}
 
